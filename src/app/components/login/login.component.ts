@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  login(){
+  async login(){
     console.log(this.loginForm)
     // const phone = JSON.stringify(this.loginForm.value.telefono);
 
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
     // if(phone === constants.ADMIN_NOVIOS.MARIA || phone === constants.ADMIN_NOVIOS.NENO) {
     //   this.isAdmin = true;
     // } else { 
-      const user = this._service.login(constants.END_POINTS.USERS, '645'/*phone*/)
-      console.log('USER - login() - LoginComponent', user);
+      const user = await this._service.login(constants.END_POINTS.USERS, '645303663' /*phone*/)
+      console.log('USER - login() - LoginComponent', user.data());
     // }
   }
   disableLogin(){}
