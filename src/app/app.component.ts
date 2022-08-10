@@ -20,8 +20,8 @@ export class AppComponent implements OnInit{
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if(!this.user) {
       // this.guardService.checkUserLogin()
-      console.log('HAY',this.user)
+      console.log('HAY - AppComponent',this.user)
     }
-    else console.log('NO HAY',this.user)
+    else console.log('NO HAY - AppComponent',this.user)
   }
 }

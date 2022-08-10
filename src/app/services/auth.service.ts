@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/firestore';
-import  { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import  { Firestore, collectionData, getDoc } from '@angular/fire/firestore';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../models/models';
@@ -52,6 +51,9 @@ export class AuthService {
   }
 
   login(collection: any, phone: string) {
+    console.log('SERVICE DE LOGIN', collection, phone)
+    // return collectionData(collection(this.firebase, collection));
+    return getDoc(collection)
     //   this.firebase.collection(collection).doc(phone).get().toPromise()
     //   .then( (data: any) => {
     //     const user = {

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/models';
+import constants from 'src/constants';
 
 @Component({
   selector: 'app-login',
@@ -9,17 +12,37 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   public loginForm!: FormGroup;
+  user!: User;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    public _service: AuthService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
+    this._service.currentUser$.subscribe( user => {
+      this.user = user;
+    })
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log('USER onInit - LoginComponent', this.user, this.user.telefono)
+    if(this.user)this.login();
+
     this.loginForm = this.formBuilder.group({
       telefono: ['', Validators.required]
     })
   }
 
   login(){
-    console.log(this.loginForm.value)
+    console.log(this.loginForm)
+    // const phone = JSON.stringify(this.loginForm.value.telefono);
+
+    // Is Administración
+    // if(phone === constants.ADMIN_NOVIOS.MARIA || phone === constants.ADMIN_NOVIOS.NENO) {
+    //   this.isAdmin = true;
+    // } else { 
+      const user = this._service.login(constants.END_POINTS.USERS, '645'/*phone*/)
+      console.log('USER - login() - LoginComponent', user);
+    // }
   }
   disableLogin(){}
 
