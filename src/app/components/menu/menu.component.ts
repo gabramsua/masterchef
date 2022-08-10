@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-menu',
+  selector: 'menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
@@ -12,4 +12,7 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  cerrarSesion() {
+    console.log('cerrar sesion')
+  }
 }

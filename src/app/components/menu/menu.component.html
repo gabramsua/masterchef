@@ -1,1 +1,35 @@
-<p>menu works!</p>
+<link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet" type="text/css">
+<div class="fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" routerLink="/home">Boda Gabri y María</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navBarContent">
+      <ul class="navbar-nav mr-auto d-flex justify-content-end">
+        <li class="nav-item d-flex justify-content-center">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/confirmacion">Confirmación de asistencia</a>
+        </li>
+        <li class="nav-item d-flex justify-content-center">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/traslados">Traslados</a>
+        </li>
+        <li class="nav-item d-flex justify-content-center">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/recomienda-cancion">Recomienda una canción</a>
+        </li>
+        <li class="nav-item d-flex justify-content-center">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/quizz">¿Cuánto conoces a los novios?</a>
+        </li>
+        <li class="nav-item d-flex justify-content-center">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/subir-foto">Sube tu foto</a>
+        </li>
+        <li class="nav-item d-flex justify-content-center" (click)="cerrarSesion()">
+          <a class="nav-link" href="#">Cerrar Sesión</a>
+        </li>
+        <!-- <li class="nav-item d-flex justify-content-center" *ngIf="isAdmin">
+          <a class="nav-link" data-toggle="collapse" data-target="#navBarContent" routerLink="/management" >Administracion</a>
+        </li> -->
+      </ul>
+    </div>
+  </nav>
+</div>
