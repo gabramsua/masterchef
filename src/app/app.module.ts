@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { AngularFireModule } from '@angular/fire';
-// import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core'; 
 
@@ -18,6 +18,7 @@ import { PuntuacionesDeCataComponent } from './components/puntuaciones-de-cata/p
 import { PuntuarComponent } from './components/puntuar/puntuar.component';
 import { CustomSnackBarComponent } from './shared/SnackBar.component';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,14 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
     ClasificacionComponent,
     PuntuacionesComponent,
     PuntuacionesDeCataComponent,
-    PuntuarComponent
+    PuntuarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}}
