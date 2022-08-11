@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
-import { Cata } from 'src/app/models/models';
+import { Cata, User } from 'src/app/models/models';
 import * as moment from 'moment';
 
 @Component({
@@ -14,6 +14,8 @@ export class CalendarioComponent implements OnInit {
   selectedDate!: Date;
   catas!: Cata[];
   hoy = new Date();
+  user!: User;
+  estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
 
   constructor(public _service: AuthService) { }
 
@@ -21,6 +23,9 @@ export class CalendarioComponent implements OnInit {
     this._service.rows$.subscribe( catas => {
       this.catas = catas;
     })
+    this.hoy.setHours(0,0,0,0);
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
     this.getAllCatas();
   }
 
@@ -44,6 +49,12 @@ export class CalendarioComponent implements OnInit {
       }
     }
     return catasAntiguas;
+  }
+  aunTieneCatasPorRealizar(): boolean {
+    return this.catas.filter(cata => cata.telefono == this.user.telefono).length < 2
+  }
+  verFechas(){
+    this.estadoCalendario = constants.ESTADOS_CALENDARIO.VER_FECHAS;
   }
 
 }

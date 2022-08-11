@@ -106,3 +106,10 @@ h4 {
   color: $verde-letra;
   font-size: x-large !important;
 }
+.btn-outline-secondary:hover {
+    // background-color: turquoise;
+    & span {
+        color: #FBFBFB;
+        font-weight: initial;
+    }
+}
