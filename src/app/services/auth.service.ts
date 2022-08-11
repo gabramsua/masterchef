@@ -51,18 +51,19 @@ export class AuthService {
   }
 
   login(collection: any, phone: string) {
-    return getDoc(doc(this.firebase, collection, phone))
-    //   this.firebase.collection(collection).doc(phone).get().toPromise()
-    //   .then( (data: any) => {
-    //     const user = {
-    //       nombre: data.data()['nombre'],
-    //       apellidos: data.data()['apellidos'],
-    //       telefono: phone, //data.data()['telefono'],
-    //     }
-    //     localStorage.setItem('currentUser', JSON.stringify(user));
-    //     this.router.navigate(['home']);
-    //   })
-    //   .catch( (err: any) => {
-    // })
+    getDoc(doc(this.firebase, collection, phone))
+    .then((data:any) => {
+      console.log(data.data())
+      if(data.data()){
+        localStorage.setItem('currentUser', JSON.stringify(data.data()));
+        this.currentUser$.next(data.data());
+        this.router.navigate(['home']);
+      } else {
+        console.log('NO login')
+      }
+    })
+    .catch((err:any) => {
+      console.log(err)
+    })
   }
 }
