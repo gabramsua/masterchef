@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon'
 import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatListModule } from '@angular/material/list'; 
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +30,8 @@ import { PuntuarComponent } from './components/puntuar/puntuar.component';
 import { CustomSnackBarComponent } from './shared/SnackBar.component';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { HomeComponent } from './components/home/home.component';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,9 @@ import { HomeComponent } from './components/home/home.component';
     ClipboardModule,
     MatIconModule,
     MatSnackBarModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatListModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
@@ -63,7 +70,8 @@ import { HomeComponent } from './components/home/home.component';
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     { provide: MAT_RADIO_DEFAULT_OPTIONS , useValue: { color: '#336E7B' } },
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}}
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}},
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
   ],
   entryComponents: [CustomSnackBarComponent],
   bootstrap: [AppComponent], 

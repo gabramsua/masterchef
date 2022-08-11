@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
-import  { Firestore, collectionData, getDoc, doc } from '@angular/fire/firestore';
+import { 
+  Firestore, 
+  collectionData, 
+  doc, 
+  addDoc, 
+  getDoc, 
+  setDoc, 
+  deleteDoc, 
+  getDocs, 
+  getFirestore,
+  collection
+} from '@angular/fire/firestore';
+
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { User } from '../models/models';
+import { Cata, User } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   items!: Observable<any[]>;
+  rows$ = new Subject<Cata[]>();
   currentUser$ = new Subject<User>();
 
   constructor(private firebase: Firestore,
@@ -27,13 +40,23 @@ export class AuthService {
     return new Observable;
     // return this.firebase.collection(collection).snapshotChanges();
   }
-  getAll(collection: any): Observable<any> {
-    return new Observable;
-    // return this.firebase.collection(collection).get();
+  getAll(collectionChosen: any) {
+    let rows: any[] = [];
+    getDocs(collection(this.firebase, collectionChosen))
+    .then((data:any) => {
+      data.docs.map((elem:any, index:any) => {
+        rows.push({...elem.data()})
+      })
+      // return rows;
+      this.rows$.next(rows);
+    })
+    .catch((err:any) => {
+      console.log(err)
+    })
   }
   
   get(collection: any, id: string) {
-    // return this.firebase.collection(collection).doc(id).get()
+    getDoc(doc(this.firebase, collection, id))
   }
 
   update(collection: any, id:string, data:any) {
@@ -51,7 +74,7 @@ export class AuthService {
   }
 
   login(collection: any, phone: string) {
-    getDoc(doc(this.firebase, collection, phone))
+    getDoc(doc(this.firebase, collection, '645303663'))
     .then((data:any) => {
       console.log(data.data())
       if(data.data()){

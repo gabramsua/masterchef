@@ -1,1 +1,44 @@
-<p>calendario works!</p>
+<h4 class="display-4 d-flex justify-content-start">Próximas Catas</h4>
+<mat-list>
+    <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
+        <div class="card-body">
+            <mat-list-item>
+                <mat-icon matListIcon>restaurant</mat-icon>
+                <h3 matLine>{{ cata.nombre }} </h3>
+                <p matLine>{{ cata.fecha }}</p>
+            </mat-list-item>
+        </div>
+    </div>
+</mat-list>
+<h4 class="display-4 d-flex justify-content-start">Últimas Catas</h4>
+<mat-list>
+    <div class="card mb-3" *ngFor="let cata of getCatasAntiguas() ">
+        <div class="card-body">
+            <mat-list-item>
+                <mat-icon matListIcon>restaurant</mat-icon>
+                <h3 matLine>{{ cata.nombre }} </h3>
+                <p matLine>{{ cata.fecha }}</p>
+            </mat-list-item>
+        </div>
+    </div>
+    <!-- <mat-divider class="mt-3 mb-3"></mat-divider> -->
+    <!-- <div class="card mb-3">
+        <div class="card-body">
+            <mat-list-item>
+                <mat-icon matListIcon>restaurant</mat-icon>
+                <h3 matLine>Ángel</h3>
+                <p matLine>Línea</p>
+            </mat-list-item>
+        </div>
+    </div> -->
+</mat-list>
+
+
+
+<mat-form-field appearance="fill">
+    <mat-label>Elije una fecha</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
