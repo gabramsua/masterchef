@@ -5,7 +5,11 @@ export interface User {
 }
 
 export interface Cata {
+    id: string;
     nombre: string;
     telefono: string;
     fecha: string;
+    entrante?: string;
+    principal?: string;
+    postre?: string;
 }

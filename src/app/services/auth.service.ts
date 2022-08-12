@@ -45,7 +45,7 @@ export class AuthService {
     getDocs(collection(this.firebase, collectionChosen))
     .then((data:any) => {
       data.docs.map((elem:any, index:any) => {
-        rows.push({...elem.data()})
+        rows.push({...elem.data(), id: elem.id})
       })
       // return rows;
       this.rows$.next(rows);

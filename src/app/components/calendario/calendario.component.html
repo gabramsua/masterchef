@@ -3,8 +3,10 @@
     <mat-list>
         <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
             <div class="card-body">
-                <mat-list-item>
-                    <mat-icon matListIcon>restaurant</mat-icon>
+                <mat-list-item 
+                [ngStyle]="{'background-color': hayCataHoy(cata.fecha) ? 'aquamarine' : 'null'}">
+                    <mat-icon matListIcon *ngIf="!hayCataHoy(cata.fecha)">restaurant</mat-icon>
+                    <mat-icon matListIcon *ngIf="hayCataHoy(cata.fecha)">dinner_dining</mat-icon>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
                 </mat-list-item>
@@ -19,26 +21,74 @@
                     <mat-icon matListIcon>restaurant</mat-icon>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
+                    <!-- <div>
+                        <span >{{ cata.entrante }}</span>
+                        <span >{{ cata.principal }}</span>
+                        <span >{{ cata.postre }}</span>
+                    </div> -->
                 </mat-list-item>
             </div>
         </div>
     </mat-list>
 
-<!-- ESTE FILTRO DE DISABLED NO LE CORRESPONDE A ESTE BOTÓN -->
-<!-- ESTE FILTRO DE DISABLED NO LE CORRESPONDE A ESTE BOTÓN -->
-<button [disabled]="!aunTieneCatasPorRealizar()" class="btn btn-outline-secondary" (click)="verFechas()">
-    <span>Ver Fechas Propuestas</span>
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<button [disabled]="aunQuedanCatasPorRealizar()" class="btn btn-outline-secondary" (click)="verFechas()">
+    <span *ngIf="!aunQuedanCatasPorRealizar()">Ver Fechas Propuestas</span>
+    <span *ngIf="aunQuedanCatasPorRealizar()">No quedan catas por realizar</span>
 </button>
-<!-- ESTE FILTRO DE DISABLED NO LE CORRESPONDE A ESTE BOTÓN -->
-<!-- ESTE FILTRO DE DISABLED NO LE CORRESPONDE A ESTE BOTÓN -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
 </div>
 
 <div *ngIf="estadoCalendario === 'ver_fechas'">
-    <mat-form-field appearance="fill">
-        <mat-label>Elije una fecha</mat-label>
-        <input matInput [matDatepicker]="picker" aria-label=".">
-        <mat-hint>DD/MM/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+    <div class="botones d-flex justify-content-between">
+        <button type="button" class="btn btn-link text-decoration-none" (click)="goBack()">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-chevron-left"></i>&nbsp;Atrás
+            </div>
+        </button>
+        <button 
+            [disabled]="!aunTieneCatasPorRealizar()" 
+            class="btn btn-outline-secondary" 
+            (click)="proponerFecha()"
+            *ngIf="!showDatepicker">
+            <span>Proponer Fecha para mi {{ siguienteCata() }} cata</span>
+        </button>
+        <button 
+            class="btn btn-outline-secondary" 
+            (click)="ocultarFecha()"
+            *ngIf="showDatepicker">
+            <span>Ocultar</span>
+        </button>
+    </div>
+    <div class="d-flex align-items-center justify-content-around" *ngIf="showDatepicker">
+        <mat-form-field appearance="fill">
+            <mat-label>Elije una fecha</mat-label>
+            <input matInput [matDatepicker]="picker" aria-label=".">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button 
+            class="btn btn-primary" 
+            (click)="saveFechaPropuesta()">
+            <span>Guardar</span>
+        </button>
+    </div>
+    
+    <div class="mt-5">
+        <h4 class="display-4 d-flex justify-content-start">Fechas propuestas para próximas Catas</h4>
+        <mat-list>
+            <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
+                <div class="card-body">
+                    <mat-list-item class="d-flex justify-content-center">
+                        <mat-icon matListIcon>restaurant</mat-icon>
+                        <h3 matLine>{{ cata.nombre }} </h3>
+                        <p matLine>{{ cata.fecha }}</p>
+                    </mat-list-item>
+                </div>
+            </div>
+        </mat-list>
+    </div>
 </div>
