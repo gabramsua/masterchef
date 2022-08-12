@@ -114,9 +114,8 @@ export class CalendarioComponent implements OnInit {
   }
 
   openModalFechaPropuesta(index: number) {
-    this.tituloModal = this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
+    this.tituloModal = 'Cata de ' + this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
     this.usuariosAFavorModal = this.fechasPropuestas[index].votosAFavor;
-    console.log('USUARIOS A FAVOR', this.usuariosAFavorModal)
     this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
   }
 }

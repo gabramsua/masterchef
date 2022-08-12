@@ -9,9 +9,12 @@ export interface Cata {
     nombre: string;
     telefono: string;
     fecha: string;
-    entrante?: string;
-    principal?: string;
-    postre?: string;
+    nombreEntrante?: string;
+    descripcionEntrante?: string;
+    nombrePrincipal?: string;
+    descripcionPrincipal?: string;
+    nombrePostre?: string;
+    descripcionPostre?: string;
 }
 
 export interface FechaPropuesta {

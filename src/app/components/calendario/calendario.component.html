@@ -21,10 +21,12 @@
                     <mat-icon matListIcon>food_bank</mat-icon>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
+                    <!-- <div class="d-flex ml-4">
+                        <span >{{ cata.nombreEntrante }}</span>
+                        <span >{{ cata.nombrePrincipal }}</span>
+                        <span >{{ cata.nombrePostre }}</span>
+                    </div> -->
                     <!-- <div>
-                        <span >{{ cata.entrante }}</span>
-                        <span >{{ cata.principal }}</span>
-                        <span >{{ cata.postre }}</span>
                     </div> -->
                 </mat-list-item>
             </div>
@@ -86,7 +88,14 @@
                         <mat-icon matListIcon>calendar_month</mat-icon>
                         <h3 matLine>{{ fecha.nombre }} </h3>
                         <p matLine>{{ fecha.id }}</p>
-                        <!-- <p>{{ fecha | json }}</p> -->
+                        <div class="d-flex ml-4">
+                            <mat-icon style="color: green;">check_circle</mat-icon>
+                            <p>{{ fechasPropuestas[i].votosAFavor.length }}</p>
+                        </div>
+                        <div class="d-flex ml-4">
+                            <mat-icon style="color: red">cancel</mat-icon>
+                            <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                        </div>
                     </mat-list-item>
                 </div>
             </div>
