@@ -14,14 +14,16 @@ import {
 
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { Cata, User } from '../models/models';
+import constants from 'src/constants';
+import { Cata, User, FechaPropuesta } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   items!: Observable<any[]>;
-  rows$ = new Subject<Cata[]>();
+  catas$ = new Subject<Cata[]>();
+  fechaspropuestas$ = new Subject<FechaPropuesta[]>();
   currentUser$ = new Subject<User>();
 
   constructor(private firebase: Firestore,
@@ -47,8 +49,18 @@ export class AuthService {
       data.docs.map((elem:any, index:any) => {
         rows.push({...elem.data(), id: elem.id})
       })
-      // return rows;
-      this.rows$.next(rows);
+
+      switch(collectionChosen){
+        case constants.END_POINTS.CATAS:
+          this.catas$.next(rows);
+          break;
+        case constants.END_POINTS.FECHAS_PROPUESTAS: 
+          this.fechaspropuestas$.next(rows);
+          break;
+        default:
+          break;
+
+      }
     })
     .catch((err:any) => {
       console.log(err)

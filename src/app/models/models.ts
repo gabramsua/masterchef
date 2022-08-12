@@ -13,3 +13,16 @@ export interface Cata {
     principal?: string;
     postre?: string;
 }
+
+export interface FechaPropuesta {
+    id:string;
+    nombre: string;
+    telefono: string;
+    fechaDesdes: string;
+    votosAFavor: Voto[];
+    votosEnContra: Voto[];
+}
+export interface Voto {
+    id: string;
+    nombre: string[];
+}

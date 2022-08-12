@@ -2,6 +2,7 @@ const Constants = {
     END_POINTS: {
         USERS: 'users',
         CATAS: 'catas',
+        FECHAS_PROPUESTAS: 'fechaspropuestas',
         FOTOS: 'fotos'
     },
     ESTADOS_CALENDARIO: {

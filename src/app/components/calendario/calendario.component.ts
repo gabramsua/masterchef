@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
-import { Cata, User } from 'src/app/models/models';
+import { Cata, FechaPropuesta, User, Voto } from 'src/app/models/models';
 import * as moment from 'moment';
 
 @Component({
@@ -18,15 +18,24 @@ export class CalendarioComponent implements OnInit {
   estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   showDatepicker = false;
 
+  fechasPropuestas: FechaPropuesta[] = [];
+  tituloModal: string = '';
+  usuariosAFavorModal: Voto[] = [];
+  usuariosEnContraModal: Voto[] = [];
+
   constructor(public _service: AuthService) { }
 
   ngOnInit(): void {
-    this._service.rows$.subscribe( catas => {
+    this._service.catas$.subscribe( catas => {
       // Sort Catas by Date DESC
       catas.sort((a, b) => (moment(a.id, 'DD-MM-YYYY').toDate().valueOf() > moment(b.id, 'DD-MM-YYYY').toDate().valueOf()) ? 1 : -1)
 
       this.catas = catas;
     })
+    this._service.fechaspropuestas$.subscribe( fechas => {
+      this.fechasPropuestas = fechas;
+    })
+
     this.hoy.setHours(0,0,0,0);
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
@@ -70,6 +79,10 @@ export class CalendarioComponent implements OnInit {
   }
   verFechas(){
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.VER_FECHAS;
+    this.getFechasPropuestas()
+  }
+  getFechasPropuestas() {
+    this._service.getAll(constants.END_POINTS.FECHAS_PROPUESTAS)
   }
   goBack() {
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
@@ -98,5 +111,12 @@ export class CalendarioComponent implements OnInit {
         day = '0' + day;
 
     return [day, month, year].join('-');
-}
+  }
+
+  openModalFechaPropuesta(index: number) {
+    this.tituloModal = this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
+    this.usuariosAFavorModal = this.fechasPropuestas[index].votosAFavor;
+    console.log('USUARIOS A FAVOR', this.usuariosAFavorModal)
+    this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
+  }
 }

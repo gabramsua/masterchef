@@ -18,7 +18,7 @@
         <div class="card mb-3" *ngFor="let cata of getCatasAntiguas() ">
             <div class="card-body">
                 <mat-list-item>
-                    <mat-icon matListIcon>restaurant</mat-icon>
+                    <mat-icon matListIcon>food_bank</mat-icon>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
                     <!-- <div>
@@ -80,15 +80,46 @@
     <div class="mt-5">
         <h4 class="display-4 d-flex justify-content-start">Fechas propuestas para próximas Catas</h4>
         <mat-list>
-            <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
+            <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
                 <div class="card-body">
-                    <mat-list-item class="d-flex justify-content-center">
-                        <mat-icon matListIcon>restaurant</mat-icon>
-                        <h3 matLine>{{ cata.nombre }} </h3>
-                        <p matLine>{{ cata.fecha }}</p>
+                    <mat-list-item class="d-flex justify-content-start" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
+                        <mat-icon matListIcon>calendar_month</mat-icon>
+                        <h3 matLine>{{ fecha.nombre }} </h3>
+                        <p matLine>{{ fecha.id }}</p>
+                        <!-- <p>{{ fecha | json }}</p> -->
                     </mat-list-item>
                 </div>
             </div>
         </mat-list>
+    </div>
+</div>
+
+<!-- MODAL FECHA PROPUESTA -->
+<div class="modal fade" id="modal_fecha_propuesta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ tituloModal }}</h2>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="col-md-6">
+                    <span class="votos-title">Votos a Favor:</span>
+                    <div *ngFor="let inv of usuariosAFavorModal">
+                      {{ inv }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="votos-title">Votos en Contra:</span>
+                    <div *ngFor="let inv of usuariosEnContraModal">                        
+                      {{ inv }}
+                    </div>
+                  </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
 </div>
