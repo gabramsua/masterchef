@@ -84,17 +84,19 @@
         <mat-list>
             <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
                 <div class="card-body">
-                    <mat-list-item class="d-flex justify-content-start" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
+                    <mat-list-item class="d-flex justify-content-start mat-list-item" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
                         <mat-icon matListIcon>calendar_month</mat-icon>
                         <h3 matLine>{{ fecha.nombre }} </h3>
                         <p matLine>{{ fecha.id }}</p>
                         <div class="d-flex ml-4">
-                            <mat-icon style="color: green;">check_circle</mat-icon>
-                            <p>{{ fechasPropuestas[i].votosAFavor.length }}</p>
-                        </div>
-                        <div class="d-flex ml-4">
-                            <mat-icon style="color: red">cancel</mat-icon>
-                            <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                            <div class="d-flex ml-4">
+                                <mat-icon style="color: green;">check_circle</mat-icon>
+                                <p>{{ fechasPropuestas[i].votosAFavor.length }}</p>
+                            </div>
+                            <div class="d-flex ml-4">
+                                <mat-icon style="color: red">cancel</mat-icon>
+                                <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                            </div>
                         </div>
                     </mat-list-item>
                 </div>
@@ -126,8 +128,14 @@
                   </div>
 
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            <div class="modal-footer" [ngClass]="user.nombre != userDeCataModal ? 'justify-content-between' : 'justify-content-end'">
+                <div *ngIf="user.nombre != userDeCataModal">
+                    <button class="btn btn-success" data-dismiss="modal">A Favor</button>
+                    <button class="btn btn-danger ml-4" data-dismiss="modal">En Contra</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>

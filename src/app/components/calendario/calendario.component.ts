@@ -20,6 +20,7 @@ export class CalendarioComponent implements OnInit {
 
   fechasPropuestas: FechaPropuesta[] = [];
   tituloModal: string = '';
+  userDeCataModal: string = '';
   usuariosAFavorModal: Voto[] = [];
   usuariosEnContraModal: Voto[] = [];
 
@@ -115,7 +116,12 @@ export class CalendarioComponent implements OnInit {
 
   openModalFechaPropuesta(index: number) {
     this.tituloModal = 'Cata de ' + this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
+    this.userDeCataModal = this.fechasPropuestas[index].nombre;
     this.usuariosAFavorModal = this.fechasPropuestas[index].votosAFavor;
     this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
+  }
+  setSpaceModalButtons() {
+    console.log(this.user.nombre, this.userDeCataModal, this.user.nombre == this.userDeCataModal ? 'justify-content-between' : 'justify-content-end')
+    return this.user.nombre == this.userDeCataModal ? 'justify-content-between' : 'justify-content-end'
   }
 }
