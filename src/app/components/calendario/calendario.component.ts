@@ -124,29 +124,24 @@ export class CalendarioComponent implements OnInit {
   }
   
   votarAFavor() {
-    //TODO: Si ya votó en contra hay que borrarlo
+    // Si ya votó en contra hay que borrarlo
     if(this.yaVoteEnContra()){
       // get index and remove()
       const indexOfUser = this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.indexOf(this.user.nombre);
-      
-      if (indexOfUser > -1) { // only splice array when item is found
-        this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.splice(indexOfUser, 1); // 2nd parameter means remove one item only
-      }
+      if (indexOfUser > -1) {this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.splice(indexOfUser, 1);}
     }
 
     this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.push(this.user.nombre)
     this._service.update(constants.END_POINTS.FECHAS_PROPUESTAS, this.fechasPropuestas[this.indexFechaAbierta].id, this.fechasPropuestas[this.indexFechaAbierta])
   }
   votarEnContra() {
-    //TODO: Si ya votó a favor hay que borrarlo
+    // Si ya votó a favor hay que borrarlo
     if(this.yaVoteAFavor()){
       // get index and remove()
       const indexOfUser = this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.indexOf(this.user.nombre);
-      
-      if (indexOfUser > -1) { // only splice array when item is found
-        this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.splice(indexOfUser, 1); // 2nd parameter means remove one item only
-      }
+      if (indexOfUser > -1) {this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.splice(indexOfUser, 1);}
     }
+    
     this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.push(this.user.nombre)
     this._service.update(constants.END_POINTS.FECHAS_PROPUESTAS, this.fechasPropuestas[this.indexFechaAbierta].id, this.fechasPropuestas[this.indexFechaAbierta])
   }
