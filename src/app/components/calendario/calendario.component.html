@@ -130,8 +130,8 @@
             </div>
             <div class="modal-footer" [ngClass]="user.nombre != userDeCataModal ? 'justify-content-between' : 'justify-content-end'">
                 <div *ngIf="user.nombre != userDeCataModal">
-                    <button class="btn btn-success" data-dismiss="modal">A Favor</button>
-                    <button class="btn btn-danger ml-4" data-dismiss="modal">En Contra</button>
+                    <button class="btn btn-success" data-dismiss="modal" (click)="votarAFavor()">A Favor</button>
+                    <button class="btn btn-danger ml-4" data-dismiss="modal" (click)="votarEnContra()">En Contra</button>
                 </div>
                 <div>
                     <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>

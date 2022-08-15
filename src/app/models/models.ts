@@ -22,10 +22,6 @@ export interface FechaPropuesta {
     nombre: string;
     telefono: string;
     fechaDesdes: string;
-    votosAFavor: Voto[];
-    votosEnContra: Voto[];
-}
-export interface Voto {
-    id: string;
-    nombre: string[];
+    votosAFavor: string[];
+    votosEnContra: string[];
 }

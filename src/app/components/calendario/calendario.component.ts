@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
-import { Cata, FechaPropuesta, User, Voto } from 'src/app/models/models';
+import { Cata, FechaPropuesta, User } from 'src/app/models/models';
 import * as moment from 'moment';
 
 @Component({
@@ -21,8 +21,9 @@ export class CalendarioComponent implements OnInit {
   fechasPropuestas: FechaPropuesta[] = [];
   tituloModal: string = '';
   userDeCataModal: string = '';
-  usuariosAFavorModal: Voto[] = [];
-  usuariosEnContraModal: Voto[] = [];
+  usuariosAFavorModal: string[] = [];
+  usuariosEnContraModal: string[] = [];
+  indexFechaAbierta: number= 0;
 
   constructor(public _service: AuthService) { }
 
@@ -117,11 +118,18 @@ export class CalendarioComponent implements OnInit {
   openModalFechaPropuesta(index: number) {
     this.tituloModal = 'Cata de ' + this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
     this.userDeCataModal = this.fechasPropuestas[index].nombre;
+    this.indexFechaAbierta = index;
     this.usuariosAFavorModal = this.fechasPropuestas[index].votosAFavor;
     this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
   }
-  setSpaceModalButtons() {
-    console.log(this.user.nombre, this.userDeCataModal, this.user.nombre == this.userDeCataModal ? 'justify-content-between' : 'justify-content-end')
-    return this.user.nombre == this.userDeCataModal ? 'justify-content-between' : 'justify-content-end'
+  
+  votarAFavor() {
+    this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.push(this.user.nombre)
+    console.log(this.fechasPropuestas[this.indexFechaAbierta])
+  }
+  votarEnContra() {
+    this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.push(this.user.nombre)
+    console.log(this.fechasPropuestas[this.indexFechaAbierta])
+
   }
 }
