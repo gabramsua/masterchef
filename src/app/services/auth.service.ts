@@ -9,7 +9,8 @@ import {
   deleteDoc, 
   getDocs, 
   getFirestore,
-  collection
+  collection,
+  updateDoc
 } from '@angular/fire/firestore';
 
 import { Observable, Subject } from 'rxjs';
@@ -73,6 +74,7 @@ export class AuthService {
 
   update(collection: any, id:string, data:any) {
     // return this.firebase.collection(collection).doc(id).update(data);
+    updateDoc(doc(this.firebase, collection, id), data)
   }
 
   delete(collection: any, id: any) {
