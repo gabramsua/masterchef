@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
 import { Cata, FechaPropuesta, User } from 'src/app/models/models';
 import * as moment from 'moment';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-calendario',
@@ -17,6 +18,7 @@ export class CalendarioComponent implements OnInit {
   user!: User;
   estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   showDatepicker = false;
+  fechaInput!: any;
 
   fechasPropuestas: FechaPropuesta[] = [];
   tituloModal: string = '';
@@ -95,9 +97,24 @@ export class CalendarioComponent implements OnInit {
   ocultarFecha() {
     this.showDatepicker = false;
   }
+  onDateChange(event: MatDatepickerInputEvent<Date>): void {
+    this.fechaInput = moment(event.value).format('DD-MM-YYYY');
+  }
   saveFechaPropuesta() {
-    console.log('SAVE FECHA PROPUESTA')
+    console.log('SAVE FECHA PROPUESTA', this.fechaInput)
     // Save and reload
+    let fechaPropuesta: FechaPropuesta = {
+      id: this.fechaInput.toString(),
+      fechaDesde: moment(this.hoy).format('DD-MM-YYYY'),
+      nombre: this.user.nombre,
+      telefono: this.user.telefono,
+      votosAFavor: [],
+      votosEnContra: []
+    }
+    console.log(fechaPropuesta)
+    // this._service.save(constants.END_POINTS.FECHAS_PROPUESTAS, fechaPropuesta)
+    this._service.saveWithId(constants.END_POINTS.FECHAS_PROPUESTAS,fechaPropuesta.id, fechaPropuesta)
+
 
     this.showDatepicker = false;
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
@@ -141,7 +158,7 @@ export class CalendarioComponent implements OnInit {
       const indexOfUser = this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.indexOf(this.user.nombre);
       if (indexOfUser > -1) {this.fechasPropuestas[this.indexFechaAbierta].votosAFavor.splice(indexOfUser, 1);}
     }
-    
+
     this.fechasPropuestas[this.indexFechaAbierta].votosEnContra.push(this.user.nombre)
     this._service.update(constants.END_POINTS.FECHAS_PROPUESTAS, this.fechasPropuestas[this.indexFechaAbierta].id, this.fechasPropuestas[this.indexFechaAbierta])
   }

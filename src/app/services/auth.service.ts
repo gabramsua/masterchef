@@ -31,12 +31,16 @@ export class AuthService {
     private router: Router) { 
   }
   
-  saveWithId(collection: any, id: any, item: any) {
-    return collectionData(collection(this.firebase, collection)); // ???????????? https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
-    // return this.firebase.collection(collection).doc(id).set(item); // PARA INSERTAR CON ID PROPIO
+  saveWithId(collectionChosen: any, id: any, item: any) {
+    setDoc(doc(this.firebase, collectionChosen, id), item)
   }
-  save(collection: any, item: any){
-    // return this.firebase.collection(collection).add(item); // PARA INSERTAR
+  save(collectionChosen: any, item: any){
+    addDoc(collection(this.firebase, collectionChosen), item).then(docRef => {
+      console.log(docRef.id);
+    })
+    .catch(error => {
+        console.log(error);
+    })
   }
 
   getAllSnapshot(collection: any): Observable<any> {
@@ -73,7 +77,6 @@ export class AuthService {
   }
 
   update(collection: any, id:string, data:any) {
-    // return this.firebase.collection(collection).doc(id).update(data);
     updateDoc(doc(this.firebase, collection, id), data)
   }
 

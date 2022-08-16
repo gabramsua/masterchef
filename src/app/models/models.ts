@@ -18,10 +18,10 @@ export interface Cata {
 }
 
 export interface FechaPropuesta {
-    id:string;
+    id: string;
     nombre: string;
     telefono: string;
-    fechaDesdes: string;
+    fechaDesde: string;
     votosAFavor: string[];
     votosEnContra: string[];
 }
