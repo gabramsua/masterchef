@@ -55,7 +55,8 @@
             class="btn btn-outline-secondary" 
             (click)="proponerFecha()"
             *ngIf="!showDatepicker">
-            <span>Proponer Fecha para mi {{ siguienteCata() }} cata</span>
+            <span *ngIf="aunTieneCatasPorRealizar()">Proponer Fecha para mi {{ siguienteCata() }} cata</span>
+            <span *ngIf="!aunTieneCatasPorRealizar()">No te quedan catas</span>
         </button>
         <button 
             class="btn btn-outline-secondary" 
@@ -84,33 +85,53 @@
         <mat-list>
             <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
                 <div class="card-body">
-                    <mat-list-item class="d-flex justify-content-start mat-list-item" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
+                    <mat-list-item class="d-flex flex-column justify-content-start mat-list-item fechasPropuestasItem" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
                         <mat-icon matListIcon>calendar_month</mat-icon>
-                        <h3 matLine>{{ fecha.nombre }} </h3>
-                        <p matLine>{{ fecha.id }}</p>
-                        <p matLine>Propuesta el {{ fecha.fechaDesde }}</p>
-                        <div class="d-flex ml-4">
-                            <div class="d-flex ml-4">
-                                <mat-icon style="color: green;">check_circle</mat-icon>
-                                <p>{{ fechasPropuestas[i].votosAFavor.length }}</p>
+
+                        <div class="d-flex flex-column">
+                            <div class="d-flex flex-column ml-2 mt-2">
+                                <h3>{{ fecha.nombre }}, el {{ fecha.id }}</h3>
+                                <!-- <span>(Propuesta el {{ fecha.fechaDesde }})</span> -->
                             </div>
-                            <div class="d-flex ml-4">
-                                <mat-icon style="color: red">cancel</mat-icon>
-                                <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
-                            </div>
-                            <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
-                                <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
-                                <p>Aún no has votado</p>
-                            </div>
-                            <div class="d-flex ml-4" *ngIf="esMiPropuesta(i)">
-                                <mat-icon style="color: burlywood">blender</mat-icon>
-                                <p>Es tu propuesta</p>
-                            </div>
-                            <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
-                                <mat-icon style="color: red">diversity_1</mat-icon>
-                                <p>&nbsp;Todos han votado</p>
+                            <div class="d-flex ml-4 flex-row">
+                                <div class="votosInfo">
+                                    <div class="d-flex ml-4">
+                                        <mat-icon style="color: green;">check_circle</mat-icon>
+                                        <p class="ml-2">{{ fechasPropuestas[i].votosAFavor.length }}</p>
+                                    </div>
+                                    <div class="d-flex ml-4">
+                                        <mat-icon style="color: red">cancel</mat-icon>
+                                        <p class="ml-2">{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-column otraInfo">
+                                    <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
+                                        <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
+                                        <p class="ml-2">Aún no has votado</p>
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="esMiPropuesta(i)">
+                                        <mat-icon style="color: burlywood">ramen_dining</mat-icon>
+                                        <!-- <mat-icon style="color: burlywood">blender</mat-icon> -->
+                                        <p class="ml-2">Es tu propuesta</p>
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
+                                        <mat-icon style="color: red">diversity_1</mat-icon>
+                                        <p class="ml-2">Todos han votado</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </mat-list-item>
+                </div>
+            </div>
+
+            <!-- SI NO HAY NINGUNA FECHA PROPUESTA -->
+            <div class="card" *ngIf="fechasPropuestas.length == 0">
+                <div class="card-body">
+                    <mat-list-item class="d-flex justify-content-center align-items-center mat-list-item">
+                        <mat-icon matListIcon>sentiment_very_dissatisfied</mat-icon>
+                        <p matLine>No hay ninguna fecha propuesta actualmente. </p>
                     </mat-list-item>
                 </div>
             </div>
@@ -146,7 +167,9 @@
                     <button class="btn btn-success" data-dismiss="modal" *ngIf="!yaVoteAFavor()" (click)="votarAFavor()">A Favor</button>
                     <button class="btn btn-danger ml-4" data-dismiss="modal" *ngIf="!yaVoteEnContra()" (click)="votarEnContra()">En Contra</button>
                 </div>
-                <div>
+                <div class="d-flex justify-content-around">
+                    <button class="btn btn-success mr-4" (click)="establecerFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Establecer</button>
+                    <button class="btn btn-danger mr-4"  (click)="descartarFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Descartar</button>
                     <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

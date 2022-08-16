@@ -24,4 +24,6 @@ export interface FechaPropuesta {
     fechaDesde: string;
     votosAFavor: string[];
     votosEnContra: string[];
+    descartada: boolean;
+    establecida: boolean;
 }
