@@ -7,6 +7,22 @@
 .fechasPropuestasItem {
     height: fit-content !important;
 }
+.rightContainer {
+    width: 100%;
+}
+.headerContainer {
+    width: 100%;
+    padding-right: 10px;
+}
 .votos-title {
     font-weight: bold;
+}
+.spanModalIcons {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    
+    mat-icon {
+        margin-right: 1rem;
+    }
 }

@@ -55,7 +55,7 @@
             class="btn btn-outline-secondary" 
             (click)="proponerFecha()"
             *ngIf="!showDatepicker">
-            <span *ngIf="aunTieneCatasPorRealizar()">Proponer Fecha para mi {{ siguienteCata() }} cata</span>
+            <span *ngIf="aunTieneCatasPorRealizar()">Proponer Fecha ({{ siguienteCata() }} cata)</span>
             <span *ngIf="!aunTieneCatasPorRealizar()">No te quedan catas</span>
         </button>
         <button 
@@ -82,19 +82,22 @@
     
     <div class="mt-5">
         <h4 class="display-4 d-flex justify-content-start">Fechas propuestas para próximas Catas</h4>
+        <mat-icon style="" data-toggle="modal" data-target="#modal_leyenda">help_outline</mat-icon>
+        
         <mat-list>
             <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
                 <div class="card-body">
                     <mat-list-item class="d-flex flex-column justify-content-start mat-list-item fechasPropuestasItem" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
                         <mat-icon matListIcon>calendar_month</mat-icon>
 
-                        <div class="d-flex flex-column">
-                            <div class="d-flex flex-column ml-2 mt-2">
-                                <h3>{{ fecha.nombre }}, el {{ fecha.id }}</h3>
+                        <div class="d-flex flex-column rightContainer">
+                            <div class="d-flex justify-content-between ml-2 mt-2 headerContainer">
+                                <h3>{{ fecha.nombre }}</h3>
+                                <h3>{{ fecha.id }}</h3>
                                 <!-- <span>(Propuesta el {{ fecha.fechaDesde }})</span> -->
                             </div>
-                            <div class="d-flex ml-4 flex-row">
-                                <div class="votosInfo">
+                            <div class="d-flex ml-4 flex-column">
+                                <div class="votosInfo d-flex">
                                     <div class="d-flex ml-4">
                                         <mat-icon style="color: green;">check_circle</mat-icon>
                                         <p class="ml-2">{{ fechasPropuestas[i].votosAFavor.length }}</p>
@@ -103,21 +106,21 @@
                                         <mat-icon style="color: red">cancel</mat-icon>
                                         <p class="ml-2">{{ fechasPropuestas[i].votosEnContra.length }}</p>
                                     </div>
-                                </div>
+                                <!-- </div>
 
-                                <div class="d-flex flex-column otraInfo">
-                                    <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
-                                        <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
-                                        <p class="ml-2">Aún no has votado</p>
-                                    </div>
+                                <div class="d-flex flex-row otraInfo"> -->
                                     <div class="d-flex ml-4" *ngIf="esMiPropuesta(i)">
                                         <mat-icon style="color: burlywood">ramen_dining</mat-icon>
                                         <!-- <mat-icon style="color: burlywood">blender</mat-icon> -->
-                                        <p class="ml-2">Es tu propuesta</p>
+                                        <!-- <p class="ml-2">Es tu propuesta</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
+                                        <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
+                                        <!-- <p class="ml-2">Aún no has votado</p> -->
                                     </div>
                                     <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
                                         <mat-icon style="color: red">diversity_1</mat-icon>
-                                        <p class="ml-2">Todos han votado</p>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +175,31 @@
                     <button class="btn btn-danger mr-4"  (click)="descartarFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Descartar</button>
                     <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL LEYENDA -->
+<div class="modal fade" id="modal_leyenda" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Leyenda de iconos</h2>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                <!-- <div class="col-md-6"> -->
+                    <span class="spanModalIcons"><mat-icon style="color: green;">check_circle</mat-icon> Votos a favor</span>
+                    <span class="spanModalIcons"><mat-icon style="color: red">cancel</mat-icon> Votos en contra</span>
+                <!-- </div>
+                <div class="col-md-6"> -->
+                    <span class="spanModalIcons"><mat-icon style="color: burlywood">ramen_dining</mat-icon> Es tu propia propuesta</span>
+                    <span class="spanModalIcons"><mat-icon style="color: rgb(238, 255, 0)">help</mat-icon> Aún no has votado esta propuesta</span>
+                    <span class="spanModalIcons"><mat-icon style="color: red">diversity_1</mat-icon> Todos hemos votado ya</span>
+                <!-- </div> -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
