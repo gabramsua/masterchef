@@ -32,6 +32,7 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
 import { HomeComponent } from './components/home/home.component';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -63,13 +64,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatNativeDateModule,
     MatDatepickerModule,
     MatListModule,
+    MatButtonToggleModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    { provide: MAT_RADIO_DEFAULT_OPTIONS , useValue: { color: '#336E7B' } },
+    { provide: MAT_RADIO_DEFAULT_OPTIONS , useValue: { color: 'red'}}, // '#336E7B' } },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000}},
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
   ],

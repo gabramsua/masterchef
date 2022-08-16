@@ -65,24 +65,37 @@
             <span>Ocultar</span>
         </button>
     </div>
-    <div class="d-flex align-items-center justify-content-around mt-3" *ngIf="showDatepicker">
-        <mat-form-field appearance="fill">
-            <mat-label>Elije una fecha</mat-label>
-            <input matInput  (dateChange)="onDateChange($event)" [matDatepicker]="picker" aria-label="." [min]="minDate" [max]="maxDate">
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field> 
-        <button 
-            class="btn btn-primary"
-            (click)="saveFechaPropuesta()">
-            <span>Guardar</span>
-        </button>
+    <div class="d-flex flex-column mt-3" *ngIf="showDatepicker">
+        <div class="d-flex flex-row justify-content-around">
+            <mat-form-field appearance="fill">
+                <mat-label>Elije una fecha</mat-label>
+                <input matInput (dateChange)="onDateChange($event)" [matDatepicker]="picker" aria-label="." [min]="minDate" [max]="maxDate">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <form [formGroup]="tipoCata">
+                <mat-radio-group class="d-flex justify-content-around flex-wrap" aria-label="Select an option!" formControlName="isAlmuerzo">
+                    <mat-radio-button class="col-sm-6" value="true">Almuerzo</mat-radio-button>
+                    <mat-radio-button class="col-sm-6" value="false">Cena</mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+            <button 
+                class="btn btn-primary saveFechaPropuesta"
+                [disabled]="fechaInput == undefined || tipoCata.value.isAlmuerzo == ''"
+                (click)="saveFechaPropuesta()">
+                <span>Guardar</span>
+            </button>
+        </div>
     </div>
     
     <div class="mt-5">
-        <h4 class="display-4 d-flex justify-content-start">Fechas propuestas para próximas Catas</h4>
-        <mat-icon style="" data-toggle="modal" data-target="#modal_leyenda">help_outline</mat-icon>
+        <div class="d-flex justify-content-start mt-2">
+            <h4 class="display-4 mr-4">Fechas propuestas para próximas Catas</h4>
+            <mat-icon data-toggle="modal" data-target="#modal_leyenda">help_outline</mat-icon>
+        </div>
         
         <mat-list>
             <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
@@ -115,11 +128,19 @@
                                         <!-- <p class="ml-2">Es tu propuesta</p> -->
                                     </div>
                                     <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
-                                        <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
+                                        <mat-icon style="color: orange">help</mat-icon>
                                         <!-- <p class="ml-2">Aún no has votado</p> -->
                                     </div>
                                     <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
                                         <mat-icon style="color: red">diversity_1</mat-icon>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="isAlmuerzo(i)">
+                                        <mat-icon style="color: rgb(238, 255, 0)">wb_sunny</mat-icon>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="!isAlmuerzo(i)">
+                                        <mat-icon style="color: blue">dark_mode</mat-icon>
                                         <!-- <p class="ml-2">Todos han votado</p> -->
                                     </div>
                                 </div>
@@ -184,19 +205,18 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Leyenda de iconos</h2>
+                <h2 class="modal-title">Qué significan los putos iconos</h2>
                 <button class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
             <div class="modal-body d-flex flex-column">
-                <!-- <div class="col-md-6"> -->
                     <span class="spanModalIcons"><mat-icon style="color: green;">check_circle</mat-icon> Votos a favor</span>
                     <span class="spanModalIcons"><mat-icon style="color: red">cancel</mat-icon> Votos en contra</span>
-                <!-- </div>
-                <div class="col-md-6"> -->
                     <span class="spanModalIcons"><mat-icon style="color: burlywood">ramen_dining</mat-icon> Es tu propia propuesta</span>
-                    <span class="spanModalIcons"><mat-icon style="color: rgb(238, 255, 0)">help</mat-icon> Aún no has votado esta propuesta</span>
+                    <span class="spanModalIcons"><mat-icon style="color: orange">help</mat-icon> Aún no has votado esta propuesta</span>
                     <span class="spanModalIcons"><mat-icon style="color: red">diversity_1</mat-icon> Todos hemos votado ya</span>
-                <!-- </div> -->
+                    <span class="spanModalIcons"><mat-icon style="color: rgb(238, 255, 0)">wb_sunny</mat-icon> Es Almuerzo</span>
+                    <span class="spanModalIcons"><mat-icon style="color: blue">dark_mode</mat-icon> Es Cena</span>
+
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>

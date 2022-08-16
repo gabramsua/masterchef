@@ -5,6 +5,7 @@ import { Cata, FechaPropuesta, User } from 'src/app/models/models';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-calendario',
@@ -22,6 +23,7 @@ export class CalendarioComponent implements OnInit {
   fechaInput!: any;
   minDate!: any;// = new Date(2000, 0, 1);
   maxDate!: any;// = new Date(2020, 0, 1);
+  public tipoCata!: FormGroup;
 
   fechasPropuestas: FechaPropuesta[] = [];
   tituloModal: string = '';
@@ -30,7 +32,10 @@ export class CalendarioComponent implements OnInit {
   usuariosEnContraModal: string[] = [];
   indexFechaAbierta: number= 0;
 
-  constructor(public _service: AuthService) { }
+  constructor(
+    public _service: AuthService,
+    private _formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
     this._service.catas$.subscribe( catas => {
@@ -52,6 +57,10 @@ export class CalendarioComponent implements OnInit {
     
     this.minDate = this.hoy;//new Date(2000, 0, 1);
     this.maxDate = new Date(2023, 6, 31);
+    
+    this.tipoCata = this._formBuilder.group({
+      isAlmuerzo: ['']
+    });
   }
 
   getAllCatas() {
@@ -119,6 +128,7 @@ export class CalendarioComponent implements OnInit {
       votosEnContra: [],
       descartada: false,
       establecida: false,
+      isAlmuerzo: this.tipoCata.value.isAlmuerzo
     }
     // SIN ID: this._service.save(constants.END_POINTS.FECHAS_PROPUESTAS, fechaPropuesta)
     /* CON ID */ this._service.saveWithId(constants.END_POINTS.FECHAS_PROPUESTAS,fechaPropuesta.id, fechaPropuesta)
@@ -138,6 +148,9 @@ export class CalendarioComponent implements OnInit {
         day = '0' + day;
 
     return [day, month, year].join('-');
+  }
+  isAlmuerzo(index:number){
+    return this.fechasPropuestas[index].isAlmuerzo;
   }
   openModalFechaPropuesta(index: number) {
     this.tituloModal = 'Cata de ' + this.fechasPropuestas[index].nombre + ' el ' + this.fechasPropuestas[index].id;
@@ -182,7 +195,7 @@ export class CalendarioComponent implements OnInit {
     return this.fechasPropuestas[index]?.telefono == this.user?.telefono
   }
   todosHanVotadoYa(i:number){
-    return this.fechasPropuestas[i].votosAFavor.length + this.fechasPropuestas[i].votosEnContra.length == 8
+    return this.fechasPropuestas[i].votosAFavor.length + this.fechasPropuestas[i].votosEnContra.length == 0
   }
   establecerFecha() {
     // Mirar que no haya una cata antes en esa fecha porque exista colisión con otra persona
@@ -213,7 +226,8 @@ export class CalendarioComponent implements OnInit {
       nombrePrincipal: '',
       descripcionPrincipal: '',
       nombrePostre: '',
-      descripcionPostre: ''
+      descripcionPostre: '',
+      isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
 

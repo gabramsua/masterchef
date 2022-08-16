@@ -15,6 +15,7 @@ export interface Cata {
     descripcionPrincipal?: string;
     nombrePostre?: string;
     descripcionPostre?: string;
+    isAlmuerzo: boolean;
 }
 
 export interface FechaPropuesta {
@@ -26,4 +27,5 @@ export interface FechaPropuesta {
     votosEnContra: string[];
     descartada: boolean;
     establecida: boolean;
+    isAlmuerzo: boolean;
 }
