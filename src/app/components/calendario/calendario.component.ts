@@ -39,11 +39,9 @@ export class CalendarioComponent implements OnInit {
       this.catas = catas;
     })
     this._service.fechaspropuestas$.subscribe( fechas => {
+      // Sort Fechas Propuestas by Date DESC
+      fechas.sort((a, b) => (moment(a.id, 'DD-MM-YYYY').toDate().valueOf() > moment(b.id, 'DD-MM-YYYY').toDate().valueOf()) ? 1 : -1)
       this.fechasPropuestas = fechas;
-      // fechas.map((elem:FechaPropuesta) => {
-      //   const favorable = elem.votosAFavor.find((elem: any) => elem == this.user.nombre)
-      //   const encontrable = elem.votosEnContra.find((elem: any) => elem == this.user.nombre)
-      // })
     })
 
     this.hoy.setHours(0,0,0,0);
@@ -117,7 +115,7 @@ export class CalendarioComponent implements OnInit {
       fechaDesde: moment(this.hoy).format('DD-MM-YYYY'),
       nombre: this.user.nombre,
       telefono: this.user.telefono,
-      votosAFavor: [],
+      votosAFavor: [this.user.nombre],
       votosEnContra: []
     }
     console.log(fechaPropuesta)
@@ -149,8 +147,6 @@ export class CalendarioComponent implements OnInit {
     this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
   }
   heVotadoAlgo(i: number) {
-    console.log('favorable', this.fechasPropuestas[i]?.votosAFavor.find((elem: any) => elem == this.user.nombre))
-    console.log('encontrable', this.fechasPropuestas[i]?.votosEnContra.find((elem: any) => elem == this.user.nombre))
     return this.fechasPropuestas[i]?.votosAFavor.find((elem: any) => elem == this.user.nombre) || this.fechasPropuestas[i]?.votosEnContra.find((elem: any) => elem == this.user.nombre)
   }
   votarAFavor() {
@@ -180,5 +176,11 @@ export class CalendarioComponent implements OnInit {
   }
   yaVoteEnContra() {
     return this.fechasPropuestas[this.indexFechaAbierta]?.votosEnContra.find((elem: any) => elem == this.user.nombre)
+  }
+  esMiPropuesta(i:number){
+    return this.fechasPropuestas[i].telefono == this.user.telefono
+  }
+  todosHanVotadoYa(i:number){
+    return this.fechasPropuestas[i].votosAFavor.length + this.fechasPropuestas[i].votosEnContra.length == 8
   }
 }

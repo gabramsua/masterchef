@@ -88,6 +88,7 @@
                         <mat-icon matListIcon>calendar_month</mat-icon>
                         <h3 matLine>{{ fecha.nombre }} </h3>
                         <p matLine>{{ fecha.id }}</p>
+                        <p matLine>Propuesta el {{ fecha.fechaDesde }}</p>
                         <div class="d-flex ml-4">
                             <div class="d-flex ml-4">
                                 <mat-icon style="color: green;">check_circle</mat-icon>
@@ -97,9 +98,17 @@
                                 <mat-icon style="color: red">cancel</mat-icon>
                                 <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
                             </div>
-                            <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i)">
+                            <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
                                 <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
                                 <p>Aún no has votado</p>
+                            </div>
+                            <div class="d-flex ml-4" *ngIf="esMiPropuesta(i)">
+                                <mat-icon style="color: burlywood">blender</mat-icon>
+                                <p>Es tu propuesta</p>
+                            </div>
+                            <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
+                                <mat-icon style="color: red">diversity_1</mat-icon>
+                                <p>&nbsp;Todos han votado</p>
                             </div>
                         </div>
                     </mat-list-item>
