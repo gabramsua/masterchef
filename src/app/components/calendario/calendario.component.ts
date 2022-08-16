@@ -19,6 +19,8 @@ export class CalendarioComponent implements OnInit {
   estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   showDatepicker = false;
   fechaInput!: any;
+  minDate!: any;// = new Date(2000, 0, 1);
+  maxDate!: any;// = new Date(2020, 0, 1);
 
   fechasPropuestas: FechaPropuesta[] = [];
   tituloModal: string = '';
@@ -38,12 +40,19 @@ export class CalendarioComponent implements OnInit {
     })
     this._service.fechaspropuestas$.subscribe( fechas => {
       this.fechasPropuestas = fechas;
+      // fechas.map((elem:FechaPropuesta) => {
+      //   const favorable = elem.votosAFavor.find((elem: any) => elem == this.user.nombre)
+      //   const encontrable = elem.votosEnContra.find((elem: any) => elem == this.user.nombre)
+      // })
     })
 
     this.hoy.setHours(0,0,0,0);
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.getAllCatas();
+    
+    this.minDate = this.hoy;//new Date(2000, 0, 1);
+    this.maxDate = new Date(2023, 6, 31);
   }
 
   getAllCatas() {
@@ -139,7 +148,11 @@ export class CalendarioComponent implements OnInit {
     this.usuariosAFavorModal = this.fechasPropuestas[index].votosAFavor;
     this.usuariosEnContraModal = this.fechasPropuestas[index].votosEnContra;
   }
-  
+  heVotadoAlgo(i: number) {
+    console.log('favorable', this.fechasPropuestas[i]?.votosAFavor.find((elem: any) => elem == this.user.nombre))
+    console.log('encontrable', this.fechasPropuestas[i]?.votosEnContra.find((elem: any) => elem == this.user.nombre))
+    return this.fechasPropuestas[i]?.votosAFavor.find((elem: any) => elem == this.user.nombre) || this.fechasPropuestas[i]?.votosEnContra.find((elem: any) => elem == this.user.nombre)
+  }
   votarAFavor() {
     // Si ya votó en contra hay que borrarlo
     if(this.yaVoteEnContra()){

@@ -64,16 +64,16 @@
             <span>Ocultar</span>
         </button>
     </div>
-    <div class="d-flex align-items-center justify-content-around" *ngIf="showDatepicker">
+    <div class="d-flex align-items-center justify-content-around mt-3" *ngIf="showDatepicker">
         <mat-form-field appearance="fill">
             <mat-label>Elije una fecha</mat-label>
-            <input matInput  (dateChange)="onDateChange($event)" [matDatepicker]="picker" aria-label=".">
+            <input matInput  (dateChange)="onDateChange($event)" [matDatepicker]="picker" aria-label="." [min]="minDate" [max]="maxDate">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field> 
         <button 
-            class="btn btn-primary" 
+            class="btn btn-primary"
             (click)="saveFechaPropuesta()">
             <span>Guardar</span>
         </button>
@@ -96,6 +96,10 @@
                             <div class="d-flex ml-4">
                                 <mat-icon style="color: red">cancel</mat-icon>
                                 <p>{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                            </div>
+                            <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i)">
+                                <mat-icon style="color: rgb(238, 255, 0)">help</mat-icon>
+                                <p>Aún no has votado</p>
                             </div>
                         </div>
                     </mat-list-item>
