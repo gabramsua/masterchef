@@ -1,1 +1,226 @@
-<p>calendario works!</p>
+<div *ngIf="estadoCalendario === 'lista'">
+    <h4 class="display-4 d-flex justify-content-start">Próximas Catas</h4>
+    <mat-list>
+        <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
+            <div class="card-body">
+                <mat-list-item 
+                [ngStyle]="{'background-color': hayCataHoy(cata.fecha) ? 'aquamarine' : 'null'}">
+                    <mat-icon matListIcon *ngIf="!hayCataHoy(cata.fecha)">restaurant</mat-icon>
+                    <mat-icon matListIcon *ngIf="hayCataHoy(cata.fecha)">dinner_dining</mat-icon>
+                    <h3 matLine>{{ cata.nombre }} </h3>
+                    <p matLine>{{ cata.fecha }}</p>
+                </mat-list-item>
+            </div>
+        </div>
+    </mat-list>
+    <h4 class="display-4 d-flex justify-content-start">Últimas Catas</h4>
+    <mat-list>
+        <div class="card mb-3" *ngFor="let cata of getCatasAntiguas() ">
+            <div class="card-body">
+                <mat-list-item>
+                    <mat-icon matListIcon>food_bank</mat-icon>
+                    <h3 matLine>{{ cata.nombre }} </h3>
+                    <p matLine>{{ cata.fecha }}</p>
+                    <!-- <div class="d-flex ml-4">
+                        <span >{{ cata.nombreEntrante }}</span>
+                        <span >{{ cata.nombrePrincipal }}</span>
+                        <span >{{ cata.nombrePostre }}</span>
+                    </div> -->
+                    <!-- <div>
+                    </div> -->
+                </mat-list-item>
+            </div>
+        </div>
+    </mat-list>
+
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<button [disabled]="aunQuedanCatasPorRealizar()" class="btn btn-outline-secondary" (click)="verFechas()">
+    <span *ngIf="!aunQuedanCatasPorRealizar()">Ver Fechas Propuestas</span>
+    <span *ngIf="aunQuedanCatasPorRealizar()">No quedan catas por realizar</span>
+</button>
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+</div>
+
+<div *ngIf="estadoCalendario === 'ver_fechas'">
+    <div class="botones d-flex justify-content-between">
+        <button type="button" class="btn btn-link text-decoration-none" (click)="goBack()">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-chevron-left"></i>&nbsp;Atrás
+            </div>
+        </button>
+        <button 
+            [disabled]="!aunTieneCatasPorRealizar()" 
+            class="btn btn-outline-secondary" 
+            (click)="proponerFecha()"
+            *ngIf="!showDatepicker">
+            <span *ngIf="aunTieneCatasPorRealizar()">Proponer Fecha ({{ siguienteCata() }} cata)</span>
+            <span *ngIf="!aunTieneCatasPorRealizar()">No te quedan catas</span>
+        </button>
+        <button 
+            class="btn btn-outline-secondary" 
+            (click)="ocultarFecha()"
+            *ngIf="showDatepicker">
+            <span>Ocultar</span>
+        </button>
+    </div>
+    <div class="d-flex flex-column mt-3" *ngIf="showDatepicker">
+        <div class="d-flex flex-row justify-content-around">
+            <mat-form-field appearance="fill">
+                <mat-label>Elije una fecha</mat-label>
+                <input matInput (dateChange)="onDateChange($event)" [matDatepicker]="picker" aria-label="." [min]="minDate" [max]="maxDate">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <form [formGroup]="tipoCata">
+                <mat-radio-group class="d-flex justify-content-around flex-wrap" aria-label="Select an option!" formControlName="isAlmuerzo">
+                    <mat-radio-button class="col-sm-6" value="true">Almuerzo</mat-radio-button>
+                    <mat-radio-button class="col-sm-6" value="false">Cena</mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+            <button 
+                class="btn btn-primary saveFechaPropuesta"
+                [disabled]="fechaInput == undefined || tipoCata.value.isAlmuerzo == ''"
+                (click)="saveFechaPropuesta()">
+                <span>Guardar</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-5">
+        <div class="d-flex justify-content-start mt-2">
+            <h4 class="display-4 mr-4">Fechas propuestas para próximas Catas</h4>
+            <mat-icon data-toggle="modal" data-target="#modal_leyenda">help_outline</mat-icon>
+        </div>
+        
+        <mat-list>
+            <div class="card mb-3" *ngFor="let fecha of fechasPropuestas; index as i;">
+                <div class="card-body">
+                    <mat-list-item class="d-flex flex-column justify-content-start mat-list-item fechasPropuestasItem" (click)="openModalFechaPropuesta(i)" data-toggle="modal" data-target="#modal_fecha_propuesta">
+                        <mat-icon matListIcon>calendar_month</mat-icon>
+
+                        <div class="d-flex flex-column rightContainer">
+                            <div class="d-flex justify-content-between ml-2 mt-2 headerContainer">
+                                <h3>{{ fecha.nombre }}</h3>
+                                <h3>{{ fecha.id }}</h3>
+                                <!-- <span>(Propuesta el {{ fecha.fechaDesde }})</span> -->
+                            </div>
+                            <div class="d-flex ml-4 flex-column">
+                                <div class="votosInfo d-flex">
+                                    <div class="d-flex ml-4">
+                                        <mat-icon style="color: green;">check_circle</mat-icon>
+                                        <p class="ml-2">{{ fechasPropuestas[i].votosAFavor.length }}</p>
+                                    </div>
+                                    <div class="d-flex ml-4">
+                                        <mat-icon style="color: red">cancel</mat-icon>
+                                        <p class="ml-2">{{ fechasPropuestas[i].votosEnContra.length }}</p>
+                                    </div>
+                                <!-- </div>
+
+                                <div class="d-flex flex-row otraInfo"> -->
+                                    <div class="d-flex ml-4" *ngIf="esMiPropuesta(i)">
+                                        <mat-icon style="color: burlywood">ramen_dining</mat-icon>
+                                        <!-- <mat-icon style="color: burlywood">blender</mat-icon> -->
+                                        <!-- <p class="ml-2">Es tu propuesta</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="!heVotadoAlgo(i) ">
+                                        <mat-icon style="color: orange">help</mat-icon>
+                                        <!-- <p class="ml-2">Aún no has votado</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="todosHanVotadoYa(i)">
+                                        <mat-icon style="color: red">diversity_1</mat-icon>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="isAlmuerzo(i)">
+                                        <mat-icon style="color: rgb(238, 255, 0)">wb_sunny</mat-icon>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
+                                    </div>
+                                    <div class="d-flex ml-4" *ngIf="!isAlmuerzo(i)">
+                                        <mat-icon style="color: blue">dark_mode</mat-icon>
+                                        <!-- <p class="ml-2">Todos han votado</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </div>
+            </div>
+
+            <!-- SI NO HAY NINGUNA FECHA PROPUESTA -->
+            <div class="card" *ngIf="fechasPropuestas.length == 0">
+                <div class="card-body">
+                    <mat-list-item class="d-flex justify-content-center align-items-center mat-list-item">
+                        <mat-icon matListIcon>sentiment_very_dissatisfied</mat-icon>
+                        <p matLine>No hay ninguna fecha propuesta actualmente. </p>
+                    </mat-list-item>
+                </div>
+            </div>
+        </mat-list>
+    </div>
+</div>
+
+<!-- MODAL FECHA PROPUESTA -->
+<div class="modal fade" id="modal_fecha_propuesta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">{{ tituloModal }}</h2>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="col-md-6">
+                    <span class="votos-title">Votos a Favor:</span>
+                    <div *ngFor="let inv of usuariosAFavorModal">
+                      {{ inv }}
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="votos-title">Votos en Contra:</span>
+                    <div *ngFor="let inv of usuariosEnContraModal">                        
+                      {{ inv }}
+                    </div>
+                  </div>
+
+            </div>
+            <div class="modal-footer" [ngClass]="user.nombre != userDeCataModal ? 'justify-content-between' : 'justify-content-end'">
+                <div *ngIf="user.nombre != userDeCataModal">
+                    <button class="btn btn-success" data-dismiss="modal" *ngIf="!yaVoteAFavor()" (click)="votarAFavor()">A Favor</button>
+                    <button class="btn btn-danger ml-4" data-dismiss="modal" *ngIf="!yaVoteEnContra()" (click)="votarEnContra()">En Contra</button>
+                </div>
+                <div class="d-flex justify-content-around">
+                    <button class="btn btn-success mr-4" (click)="establecerFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Establecer</button>
+                    <button class="btn btn-danger mr-4"  (click)="descartarFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Descartar</button>
+                    <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODAL LEYENDA -->
+<div class="modal fade" id="modal_leyenda" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Qué significan los putos iconos</h2>
+                <button class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                    <span class="spanModalIcons"><mat-icon style="color: green;">check_circle</mat-icon> Votos a favor</span>
+                    <span class="spanModalIcons"><mat-icon style="color: red">cancel</mat-icon> Votos en contra</span>
+                    <span class="spanModalIcons"><mat-icon style="color: burlywood">ramen_dining</mat-icon> Es tu propia propuesta</span>
+                    <span class="spanModalIcons"><mat-icon style="color: orange">help</mat-icon> Aún no has votado esta propuesta</span>
+                    <span class="spanModalIcons"><mat-icon style="color: red">diversity_1</mat-icon> Todos hemos votado ya</span>
+                    <span class="spanModalIcons"><mat-icon style="color: rgb(238, 255, 0)">wb_sunny</mat-icon> Es Almuerzo</span>
+                    <span class="spanModalIcons"><mat-icon style="color: blue">dark_mode</mat-icon> Es Cena</span>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

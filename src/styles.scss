@@ -1,3 +1,4 @@
+@import './app/variables.scss';
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
@@ -67,10 +68,15 @@ $boda2022-theme: mat-light-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($boda2022-theme);
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~open-iconic/font/css/open-iconic-bootstrap.css';
+@import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
 
 /* You can add global styles to this file, and also import other style files */
 $body_color:rgb(98,176,222,0.16);
 $span_color: #336E7B;
+
 html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body { 
@@ -87,5 +93,37 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-step-header .mat-step-icon {
   background-color: white;
-  color: #336E7B;
+  color: $verde-letra;
+}
+h1 {
+  color: $azul-letra;
+  font-family: "Julius Sans One";
+  // margin-top: 4em;
+  // margin-bottom: 2em;
+}
+h4 {
+  font-family: 'Handlee', cursive;
+  color: $verde-letra;
+  font-size: x-large !important;
+}
+.btn-primary {
+  background-color: $verde-letra;
+  & span {
+    color: #FBFBFB;
+    font-weight: initial;
+  }
+}
+.btn-primary:hover {
+  background-color: $verde-letra;
+  & span {
+    color: #FBFBFB;
+    font-weight: initial;
+  }
+}
+.btn-outline-secondary:hover {
+    // background-color: turquoise;
+    & span {
+        color: #FBFBFB;
+        font-weight: initial;
+    }
 }

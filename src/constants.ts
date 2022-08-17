@@ -1,12 +1,13 @@
 const Constants = {
     END_POINTS: {
         USERS: 'users',
-        QUIZZ_PREGUNTAS: 'quizzNeno',
-        RESULTADOS_CANCIONES: 'resultados_canciones',
-        PASS: 'isAdmin',
-        RESULTADOS_QUIZZ: 'resultadosQuizz',
-        MANOS: 'manos',
+        CATAS: 'catas',
+        FECHAS_PROPUESTAS: 'fechaspropuestas',
         FOTOS: 'fotos'
-    }
+    },
+    ESTADOS_CALENDARIO: {
+        LISTA: 'lista',
+        VER_FECHAS: 'ver_fechas'
+    },
 };
 export default Constants;

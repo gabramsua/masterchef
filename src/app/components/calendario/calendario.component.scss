@@ -1,0 +1,42 @@
+.card-body {
+    padding: 0;
+}
+.mat-list-item {
+    width: 100%;
+}
+.fechasPropuestasItem {
+    height: fit-content !important;
+}
+.rightContainer {
+    width: 100%;
+}
+.headerContainer {
+    width: 100%;
+    padding-right: 10px;
+}
+.votos-title {
+    font-weight: bold;
+}
+.spanModalIcons {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    
+    mat-icon {
+        margin-right: 1rem;
+    }
+}
+.saveFechaPropuesta:disabled{
+    background: grey;
+}
+::ng-deep .mat-radio-outer-circle {
+    .mat-radio-checked & {
+          border-color: #336E7B; // 3f51b5
+        }
+    }
+::ng-deep .mat-radio-inner-circle {
+    background-color: #336E7B;
+}
+::ng-deep .mat-radio-ripple .mat-ripple-element {
+    background-color: rgba(#336E7B, 0.26);
+}
