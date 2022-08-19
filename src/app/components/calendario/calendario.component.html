@@ -17,17 +17,10 @@
     <mat-list>
         <div class="card mb-3" *ngFor="let cata of getCatasAntiguas() ">
             <div class="card-body">
-                <mat-list-item>
+                <mat-list-item (click)="verCata(cata)">
                     <mat-icon matListIcon>food_bank</mat-icon>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
-                    <!-- <div class="d-flex ml-4">
-                        <span >{{ cata.nombreEntrante }}</span>
-                        <span >{{ cata.nombrePrincipal }}</span>
-                        <span >{{ cata.nombrePostre }}</span>
-                    </div> -->
-                    <!-- <div>
-                    </div> -->
                 </mat-list-item>
             </div>
         </div>

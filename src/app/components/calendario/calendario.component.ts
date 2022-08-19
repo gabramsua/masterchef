@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendario',
@@ -35,6 +36,7 @@ export class CalendarioComponent implements OnInit {
   constructor(
     public _service: AuthService,
     private _formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +94,6 @@ export class CalendarioComponent implements OnInit {
   }
   hayCataHoy(fecha: any): boolean {
     return fecha ==  this.formatDate(this.hoy);
-
   }
   siguienteCata() {
     const number = this.catas.filter(cata => cata.telefono == this.user.telefono).length
@@ -148,6 +149,10 @@ export class CalendarioComponent implements OnInit {
         day = '0' + day;
 
     return [day, month, year].join('-');
+  }
+  verCata(cata: Cata){
+    localStorage.setItem('currentCata', JSON.stringify(cata));
+    this.router.navigate(['verCata']);
   }
   isAlmuerzo(index:number){
     return this.fechasPropuestas[index].isAlmuerzo;
