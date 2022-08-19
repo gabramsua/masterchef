@@ -16,6 +16,10 @@ export interface Cata {
     nombrePostre?: string;
     descripcionPostre?: string;
     isAlmuerzo: boolean;
+    isPrimeraCata?: boolean;
+    fotoEntrante?: string;
+    fotoPrincipal?: string;
+    fotoPostre?: string;
 }
 
 export interface FechaPropuesta {
@@ -28,4 +32,9 @@ export interface FechaPropuesta {
     descartada: boolean;
     establecida: boolean;
     isAlmuerzo: boolean;
+}
+export interface Plato {
+    nombre: string;
+    descripcion: string;
+    foto: string;
 }

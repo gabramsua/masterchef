@@ -1,0 +1,16 @@
+<h3>{{ cata.isPrimeraCata ? 'Primera' : 'Segunda' }} cata de {{ cata.nombre }}</h3>
+<h1 class="display-4 d-flex justify-content-center">El menú</h1>
+<div class="container-fluid py-2">
+    <div class="d-flex flex-row flex-nowrap overflow-auto">
+        <plato-detail [plato]="platoEntrante"></plato-detail>
+        <plato-detail [plato]="platoPrincipal"></plato-detail>
+        <plato-detail [plato]="platoPostre"></plato-detail>
+    </div>
+</div>
+
+<h1 class="display-4 d-flex justify-content-center">Puntuaciones</h1>
+<div class="row">
+    <div class="col">Entrante</div>
+    <div class="col">Principal</div>
+    <div class="col">Postre</div>
+</div> 

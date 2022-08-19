@@ -16,6 +16,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon'
 import { MatStepperModule } from '@angular/material/stepper'; 
 import { MatListModule } from '@angular/material/list'; 
+import {MatCardModule} from '@angular/material/card';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,6 +34,9 @@ import { HomeComponent } from './components/home/home.component';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { VerCataComponent } from './components/ver-cata/ver-cata.component';
+import { PlatoDetailComponent } from './components/plato-detail/plato-detail.component';
+import { PuntuacionDetailComponent } from './components/puntuacion-detail/puntuacion-detail.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,10 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
     PuntuacionesComponent,
     PuntuacionesDeCataComponent,
     PuntuarComponent,
-    HomeComponent
+    HomeComponent,
+    VerCataComponent,
+    PlatoDetailComponent,
+    PuntuacionDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +72,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
     MatDatepickerModule,
     MatListModule,
     MatButtonToggleModule,
+    MatCardModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
