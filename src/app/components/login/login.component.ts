@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
     //   this.isAdmin = true;
     // } else { 
       await this._service.login(constants.END_POINTS.USERS, this.loginForm.value.telefono.toString())
+      await this._service.getAll(constants.END_POINTS.USERS);
     // }
   }
   disableLogin(){}

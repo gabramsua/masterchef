@@ -24,8 +24,10 @@ import { Cata, User, FechaPropuesta } from '../models/models';
 export class AuthService {
   items!: Observable<any[]>;
   catas$ = new Subject<Cata[]>();
+  jueces$ = new Subject<User[]>();
   fechaspropuestas$ = new Subject<FechaPropuesta[]>();
   currentUser$ = new Subject<User>();
+  currentGet$ = new Subject<any>();
 
   constructor(private firebase: Firestore,
     private router: Router) { 
@@ -62,6 +64,10 @@ export class AuthService {
         case constants.END_POINTS.FECHAS_PROPUESTAS: 
           this.fechaspropuestas$.next(rows);
           break;
+        case constants.END_POINTS.USERS:
+          localStorage.setItem('jueces', JSON.stringify(rows));
+          this.jueces$.next(rows);
+          break;
         default:
           break;
 
@@ -72,8 +78,13 @@ export class AuthService {
     })
   }
   
-  get(collection: any, id: string) {
-    getDoc(doc(this.firebase, collection, id))
+  get(collectionChosen: any, id: string) {
+    // console.log('GET', collectionChosen, id)
+    // console.log('catainfo', getDoc(doc(this.firebase, collectionChosen, id)))
+    getDoc(doc(this.firebase, collectionChosen, id))
+    .then((data:any) => {
+      this.currentGet$.next(data.data())
+    })
   }
 
   update(collection: any, id:string, data:any) {
@@ -93,7 +104,6 @@ export class AuthService {
   login(collection: any, phone: string) {
     getDoc(doc(this.firebase, collection, '645303663'))
     .then((data:any) => {
-      console.log(data.data())
       if(data.data()){
         localStorage.setItem('currentUser', JSON.stringify(data.data()));
         this.currentUser$.next(data.data());

@@ -3,6 +3,7 @@ const Constants = {
         USERS: 'users',
         CATAS: 'catas',
         FECHAS_PROPUESTAS: 'fechaspropuestas',
+        PUNTUACIONES: 'puntuaciones',
         FOTOS: 'fotos'
     },
     ESTADOS_CALENDARIO: {
