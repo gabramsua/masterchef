@@ -1,5 +1,5 @@
-<h3>{{ cata.isPrimeraCata ? 'Primera' : 'Segunda' }} cata de {{ cata.nombre }}</h3>
-<h1 class="display-4 d-flex justify-content-center">El menú</h1>
+<h3 class="d-flex justify-content-center">{{ cata.isPrimeraCata ? 'Primera' : 'Segunda' }} cata de {{ cata.nombre }}</h3>
+<h1 class="display-4">El menú</h1>
 <div class="container-fluid py-2">
     <div class="d-flex flex-row flex-nowrap overflow-auto">
         <plato-detail [plato]="platoEntrante" (click)="puntuacionesDePlato(0)"></plato-detail>
@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<h1 class="display-4 d-flex justify-content-center">Puntuaciones</h1>
+<h1 class="display-4 mt-4">Puntuaciones</h1>
 <div class="row" *ngIf="!puntuacionesDePlatoSeleccionado.length">
     <span>Selecciona un plato para ver las puntuaciones de los jueces</span>
 </div>
