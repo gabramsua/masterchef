@@ -12,11 +12,8 @@
 <div class="row" *ngIf="!puntuacionesDePlatoSeleccionado.length">
     <span>Selecciona un plato para ver las puntuaciones de los jueces</span>
 </div>
-<div class="row" *ngIf="puntuacionesDePlatoSeleccionado.length">
-    <!-- <div class="col">Entrante</div>
-    <div class="col">Principal</div>
-    <div class="col">Postre</div> -->
-    <div *ngFor="let puntuacionDeJuez of puntuacionesDePlatoSeleccionado">
+<div class="container-fluid py-2 d-flex flex-row flex-nowrap overflow-auto" *ngIf="puntuacionesDePlatoSeleccionado.length">
+    <div class="puntuaciones-container" *ngFor="let puntuacionDeJuez of puntuacionesDePlatoSeleccionado">
         <puntuacion-detail [puntos]="puntuacionDeJuez"></puntuacion-detail>
     </div>
 </div> 

@@ -54,7 +54,7 @@ export class VerCataComponent implements OnInit {
 
   puntuacionesDePlato(platoSeleccionado: number) {
     this.puntuacionesDePlatoSeleccionado = [];
-    
+
     // Seleccionar el plato dentro de cada juez
     this.puntuacionesDeLaCata.map( (elem:any) => {
       this.jueces.map((juez:User) => {
@@ -66,8 +66,5 @@ export class VerCataComponent implements OnInit {
         })
       })
     })
-    console.log(this.puntuacionesDePlatoSeleccionado)
-
-
   }
 }

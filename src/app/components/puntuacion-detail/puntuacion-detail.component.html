@@ -1,4 +1,16 @@
-<span>{{ puntos.nombre }}</span>
-<span>{{ puntos.cantidad }}</span>
-<span>{{ puntos.estetica }}</span>
-<span>{{ puntos.sabor }}</span>
+<div class="card" style="width: fit-content;">
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <h5 class="card-title">{{ puntos.nombre }}</h5>
+        </div>
+        <!-- <div class="d-flex justify-content-between"> -->
+            <p class="card-text d-flex justify-content-between"><span>Cantidad: </span>{{ puntos.cantidad }}</p>
+        <!-- </div>
+        <div class="d-flex justify-content-between"> -->
+            <p class="card-text d-flex justify-content-between"><span>Estética: </span>{{ puntos.estetica }}</p>
+        <!-- </div>
+        <div class="d-flex justify-content-between"> -->
+            <p class="card-text d-flex justify-content-between"><span>Sabor: </span>{{ puntos.sabor }}</p>
+        <!-- </div> -->
+    </div>
+</div>
