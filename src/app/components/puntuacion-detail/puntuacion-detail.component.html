@@ -3,14 +3,13 @@
         <div class="d-flex justify-content-center">
             <h5 class="card-title">{{ puntos.nombre }}</h5>
         </div>
-        <!-- <div class="d-flex justify-content-between"> -->
-            <p class="card-text d-flex justify-content-between"><span>Cantidad: </span>{{ puntos.cantidad }}</p>
-        <!-- </div>
-        <div class="d-flex justify-content-between"> -->
-            <p class="card-text d-flex justify-content-between"><span>Estética: </span>{{ puntos.estetica }}</p>
-        <!-- </div>
-        <div class="d-flex justify-content-between"> -->
-            <p class="card-text d-flex justify-content-between"><span>Sabor: </span>{{ puntos.sabor }}</p>
-        <!-- </div> -->
+        <p class="card-text d-flex justify-content-between"><span>Cantidad: </span>{{ puntos.cantidad }}</p>
+        <p class="card-text d-flex justify-content-between"><span>Estética: </span>{{ puntos.estetica }}</p>
+        <p class="card-text d-flex justify-content-between"><span>Sabor: </span>{{ puntos.sabor }}</p>
+
+        <div class="media-resumen d-flex justify-content-center">
+            <hr>
+            <h5 class="card-title">{{ puntuacionMedia }}</h5>
+        </div>
     </div>
 </div>

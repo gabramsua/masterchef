@@ -7,12 +7,13 @@ import { Valoracion } from 'src/app/models/models';
   styleUrls: ['./puntuacion-detail.component.scss']
 })
 export class PuntuacionDetailComponent implements OnInit {
-  @Input() puntos!: Valoracion; // {nombre: string, cantidad: number, estetica: number, sabor: number};
-
+  @Input() puntos!: Valoracion;
+  puntuacionMedia: any = 0;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.puntuacionMedia = ((this.puntos.cantidad + this.puntos.estetica + this.puntos.sabor) / 3).toPrecision(2); // toFixed(2)
   }
 
 }
