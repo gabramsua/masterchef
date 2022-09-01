@@ -49,6 +49,12 @@ export class CalendarioComponent implements OnInit {
     this._service.fechaspropuestas$.subscribe( fechas => {
       // Sort Fechas Propuestas by Date DESC
       fechas.sort((a, b) => (moment(a.id, 'DD-MM-YYYY').toDate().valueOf() > moment(b.id, 'DD-MM-YYYY').toDate().valueOf()) ? 1 : -1)
+
+      // Si las fechas propuestas son anteriores a la fecha actual => DESCARTAR
+      const fechasADescartar = fechas.filter((elem: FechaPropuesta) => moment(elem.id, 'DD-MM-YYYY').toDate() < this.hoy);
+      fechas = fechas.filter((elem: FechaPropuesta) => moment(elem.id, 'DD-MM-YYYY').toDate() >= this.hoy);
+      this.descartarFechasAntiguas(fechasADescartar)
+
       this.fechasPropuestas = fechas.filter((elem: FechaPropuesta) => !elem.descartada && !elem.establecida);
     })
 
@@ -245,6 +251,15 @@ export class CalendarioComponent implements OnInit {
       this.fechasPropuestas[this.indexFechaAbierta].id, 
       this.fechasPropuestas[this.indexFechaAbierta])
     this.sweetAlert()
+  }
+  descartarFechasAntiguas(fechas: any[]){
+    fechas.map((elem:any) => {
+      elem.descartada = true;
+      this._service.update(
+        constants.END_POINTS.FECHAS_PROPUESTAS, 
+        elem.id, 
+        elem)
+    })
   }
   
   sweetAlert(){
