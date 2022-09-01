@@ -2,6 +2,8 @@ export interface User {
     nombre: string;
     apellidos: string;
     telefono: string;
+    cata1?: string;
+    cata2?: string;
 }
 
 export interface Cata {
@@ -34,7 +36,18 @@ export interface FechaPropuesta {
     isAlmuerzo: boolean;
 }
 export interface Plato {
+    nombre?: string;
+    descripcion?: string;
+    foto?: string;
+}
+
+export interface PuntuacionesDeCata {
+    juez: Valoracion[];
+}
+
+export interface Valoracion {
+    cantidad: number;
+    estetica: number;
+    sabor: number;
     nombre: string;
-    descripcion: string;
-    foto: string;
 }

@@ -2,15 +2,21 @@
 <h1 class="display-4 d-flex justify-content-center">El menú</h1>
 <div class="container-fluid py-2">
     <div class="d-flex flex-row flex-nowrap overflow-auto">
-        <plato-detail [plato]="platoEntrante"></plato-detail>
-        <plato-detail [plato]="platoPrincipal"></plato-detail>
-        <plato-detail [plato]="platoPostre"></plato-detail>
+        <plato-detail [plato]="platoEntrante" (click)="puntuacionesDePlato(0)"></plato-detail>
+        <plato-detail [plato]="platoPrincipal" (click)="puntuacionesDePlato(1)"></plato-detail>
+        <plato-detail [plato]="platoPostre" (click)="puntuacionesDePlato(2)"></plato-detail>
     </div>
 </div>
 
 <h1 class="display-4 d-flex justify-content-center">Puntuaciones</h1>
-<div class="row">
-    <div class="col">Entrante</div>
+<div class="row" *ngIf="!puntuacionesDePlatoSeleccionado.length">
+    <span>Selecciona un plato para ver las puntuaciones de los jueces</span>
+</div>
+<div class="row" *ngIf="puntuacionesDePlatoSeleccionado.length">
+    <!-- <div class="col">Entrante</div>
     <div class="col">Principal</div>
-    <div class="col">Postre</div>
+    <div class="col">Postre</div> -->
+    <div *ngFor="let puntuacionDeJuez of puntuacionesDePlatoSeleccionado">
+        <puntuacion-detail [puntos]="puntuacionDeJuez"></puntuacion-detail>
+    </div>
 </div> 
