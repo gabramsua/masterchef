@@ -66,7 +66,6 @@ export class AuthService {
           break;
         case constants.END_POINTS.USERS:
           localStorage.setItem('jueces', JSON.stringify(rows));
-          this.jueces$.next(rows);
           break;
         default:
           break;

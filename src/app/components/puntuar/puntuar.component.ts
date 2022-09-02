@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Cata, User, Valoracion } from 'src/app/models/models';
+import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
-import { PuntuacionesDeCata } from '../../models/models';
+import constants from 'src/constants';
 
 @Component({
   selector: 'app-puntuar',
@@ -18,6 +18,7 @@ export class PuntuarComponent implements OnInit {
   puntuacionesEntrante: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
   puntuacionesPrincipal: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
   puntuacionesPostre: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
+  puntuacionesEnCurso!: PuntuacionesDeCata;
 
   constructor(
     public _service: AuthService,
@@ -26,7 +27,21 @@ export class PuntuarComponent implements OnInit {
   ngOnInit(): void {
     this.currentCata = JSON.parse(localStorage.getItem('currentCata') || '{}');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Cargar las puntuaciones guardadas de la cata en curso
+    this.getPuntuacionesEnCurso();
+    this._service.currentGet$.subscribe( puntuaciones => {
+      if(puntuaciones != undefined) {
+        this.puntuacionesEntrante = puntuaciones[this.currentUser.telefono][0];
+        this.puntuacionesPrincipal = puntuaciones[this.currentUser.telefono][1];
+        this.puntuacionesPostre = puntuaciones[this.currentUser.telefono][2];
+      }
+    })
   }
+  getPuntuacionesEnCurso() {
+    this._service.get(constants.END_POINTS.PUNTUACIONES, this.currentCata.id);
+  }
+
   calcularMediaEntrante() {
     return ((this.puntuacionesEntrante.cantidad + this.puntuacionesEntrante.estetica + this.puntuacionesEntrante.sabor) / 3).toPrecision(2); // toFixed(2)
   }
@@ -41,7 +56,9 @@ export class PuntuarComponent implements OnInit {
     this.puntuacionesEntrante.nombre = this.currentUser?.nombre;
     this.puntuacionesPrincipal.nombre = this.currentUser?.nombre;
     this.puntuacionesPostre.nombre = this.currentUser?.nombre;
-    console.log('guardar puntuaciones', this.puntuacionesEntrante, this.puntuacionesPrincipal, this.puntuacionesPostre)
+    
+    const puntuacionDeCata = { [this.currentUser?.telefono]: [this.puntuacionesEntrante, this.puntuacionesPrincipal, this.puntuacionesPostre, this.currentUser?.nombre] };
+    this._service.update(constants.END_POINTS.PUNTUACIONES, this.currentCata.id, puntuacionDeCata)
   }
 
   goBack(){

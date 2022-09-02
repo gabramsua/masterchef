@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
-import { Cata, FechaPropuesta, User } from 'src/app/models/models';
+import { Cata, FechaPropuesta, User, Valoracion } from 'src/app/models/models';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import Constants from 'src/constants';
+import { PuntuacionesDeCata } from '../../models/models';
 
 @Component({
   selector: 'app-calendario',
@@ -163,7 +164,8 @@ export class CalendarioComponent implements OnInit {
     localStorage.setItem('currentCata', JSON.stringify(cata));
     this.router.navigate(['verCata']);
   }
-  isAlmuerzo(index:number){
+  isAlmuerzo(index:number) {
+    console.log('IS ALMUERZO?', this.fechasPropuestas[index].isAlmuerzo)
     return this.fechasPropuestas[index].isAlmuerzo;
   }
   openModalFechaPropuesta(index: number) {
@@ -245,6 +247,7 @@ export class CalendarioComponent implements OnInit {
       votacionesAbiertas: false
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
+    this.crearPuntuacionesVacias(cata.id);
 
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
@@ -263,6 +266,22 @@ export class CalendarioComponent implements OnInit {
         constants.END_POINTS.FECHAS_PROPUESTAS, 
         elem.id, 
         elem)
+    })
+  }
+  crearPuntuacionesVacias(id:string) {
+    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {key:'value'}) // no se puede crear un objeto vacío
+    // Jueces
+    const jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
+    jueces.map((juez:User) => {
+
+      const valoracion: Valoracion = {
+        cantidad: 0,
+        estetica: 0,
+        sabor: 0,
+        nombre: juez.nombre,
+      }
+      const puntuacionDeCata = { [juez.telefono]: [valoracion, valoracion, valoracion, juez.nombre] };
+      this._service.update(constants.END_POINTS.PUNTUACIONES, id, puntuacionDeCata)
     })
   }
 
@@ -302,7 +321,8 @@ export class CalendarioComponent implements OnInit {
     //   dificultad: ['', Validators.required]
     // });
   }
-  errorAlert(error: string){
+  errorAlert(error: string) {
+    // TODO: ¿Guardar esto es necesario? ver línea 214
     this._service.update(
       constants.END_POINTS.FECHAS_PROPUESTAS, 
       this.fechasPropuestas[this.indexFechaAbierta].id, 
