@@ -9,6 +9,7 @@
                 [ngStyle]="{'background-color': hayCataHoy(cata.fecha) ? 'aquamarine' : 'null'}">
                     <mat-icon matListIcon *ngIf="!hayCataHoy(cata.fecha)">restaurant</mat-icon>
                     <mat-icon matListIcon *ngIf="hayCataHoy(cata.fecha)">dinner_dining</mat-icon>
+                    <i class="fa-solid fa-lock-open" *ngIf="cata.votacionesAbiertas"></i>
                     <h3 matLine>{{ cata.nombre }} </h3>
                     <p matLine>{{ cata.fecha }}</p>
                 </mat-list-item>

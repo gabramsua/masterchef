@@ -94,8 +94,8 @@
     </mat-panel-title>
     <mat-panel-description>
           <span> </span>
-        <mat-icon *ngIf="!cataParaEditar.votacionesAbiertas">lock</mat-icon>
-        <mat-icon *ngIf="cataParaEditar.votacionesAbiertas">lock_open</mat-icon>
+        <i class="fa-solid fa-lock" *ngIf="!cataParaEditar.votacionesAbiertas"></i>
+        <i class="fa-solid fa-lock-open" *ngIf="cataParaEditar.votacionesAbiertas"></i>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
