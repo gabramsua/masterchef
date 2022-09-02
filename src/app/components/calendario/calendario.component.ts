@@ -7,6 +7,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import Constants from 'src/constants';
 
 @Component({
   selector: 'app-calendario',
@@ -32,6 +33,8 @@ export class CalendarioComponent implements OnInit {
   usuariosAFavorModal: string[] = [];
   usuariosEnContraModal: string[] = [];
   indexFechaAbierta: number= 0;
+
+  cataParaEditar!: Cata;
 
   constructor(
     public _service: AuthService,
@@ -232,12 +235,12 @@ export class CalendarioComponent implements OnInit {
       nombre: this.user.nombre,
       telefono: this.user.telefono,
       fecha: this.fechasPropuestas[this.indexFechaAbierta].id,
-      nombreEntrante: '',
-      descripcionEntrante: '',
-      nombrePrincipal: '',
-      descripcionPrincipal: '',
-      nombrePostre: '',
-      descripcionPostre: '',
+      nombreEntrante: 'Sin nombre entrante',
+      descripcionEntrante: 'Sin descripción entrante',
+      nombrePrincipal: 'Sin nombre principal',
+      descripcionPrincipal: 'Sin descripción principal',
+      nombrePostre: 'Sin nombre postre',
+      descripcionPostre: 'Sin descripción postre',
       isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
@@ -260,6 +263,16 @@ export class CalendarioComponent implements OnInit {
         elem.id, 
         elem)
     })
+  }
+
+  esMiCata(cata: Cata){
+    return cata.telefono == this.user?.telefono
+  }
+  editarCata(cata: Cata) {
+    if(this.esMiCata(cata)) {
+      this.cataParaEditar = cata;
+      this.estadoCalendario = Constants.ESTADOS_CALENDARIO.EDITAR_CATA;
+    }
   }
   
   sweetAlert(){

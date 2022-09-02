@@ -3,7 +3,9 @@
     <mat-list>
         <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
             <div class="card-body">
+                <!-- [disabled]="esMiCata(cata)" -->
                 <mat-list-item 
+                (click)="editarCata(cata)"
                 [ngStyle]="{'background-color': hayCataHoy(cata.fecha) ? 'aquamarine' : 'null'}">
                     <mat-icon matListIcon *ngIf="!hayCataHoy(cata.fecha)">restaurant</mat-icon>
                     <mat-icon matListIcon *ngIf="hayCataHoy(cata.fecha)">dinner_dining</mat-icon>
@@ -154,6 +156,10 @@
             </div>
         </mat-list>
     </div>
+</div>
+
+<div *ngIf="estadoCalendario === 'editar_cata'">
+    <editar-cata (dispatchGoBack)="goBack()" [cataParaEditar]="cataParaEditar"></editar-cata>
 </div>
 
 <!-- MODAL FECHA PROPUESTA -->

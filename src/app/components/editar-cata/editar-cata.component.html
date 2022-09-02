@@ -1,0 +1,91 @@
+<div class="botones d-flex justify-content-between">
+    <button type="button" class="btn btn-link text-decoration-none" (click)="goBack()">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-chevron-left"></i>&nbsp;Atrás
+        </div>
+    </button>
+    <span>Editar datos de la cata</span>
+</div>
+<mat-accordion class="editar-cata-container">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Entrante
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ cataParaEditar.nombreEntrante }}
+          <mat-icon>soup_kitchen</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre del entrante</mat-label>
+        <input matInput aria-label=".">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="textarea-container">
+        <mat-label>Descripción del entrante</mat-label>
+        <textarea matInput aria-label="."></textarea>
+      </mat-form-field>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Principal
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ cataParaEditar.nombrePrincipal }}
+          <mat-icon>dinner_dining</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre del principal</mat-label>
+        <input matInput aria-label=".">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="textarea-container">
+        <mat-label>Descripción del principal</mat-label>
+        <textarea matInput aria-label="."></textarea>
+      </mat-form-field>
+  
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Postre
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ cataParaEditar.nombrePostre }}
+          <mat-icon>icecream</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre del postre</mat-label>
+        <input matInput aria-label=".">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="textarea-container">
+        <mat-label>Descripción del postre</mat-label>
+        <textarea matInput aria-label="."></textarea>
+      </mat-form-field>
+  
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">Guardar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+  

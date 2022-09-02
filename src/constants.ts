@@ -8,7 +8,8 @@ const Constants = {
     },
     ESTADOS_CALENDARIO: {
         LISTA: 'lista',
-        VER_FECHAS: 'ver_fechas'
+        VER_FECHAS: 'ver_fechas',
+        EDITAR_CATA: 'editar_cata'
     },
 };
 export default Constants;
