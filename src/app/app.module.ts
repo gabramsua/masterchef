@@ -19,6 +19,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -79,6 +80,7 @@ import { EditarCataComponent } from './components/editar-cata/editar-cata.compon
     MatCardModule,
     MatExpansionModule,
     MatSlideToggleModule,
+    MatSliderModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),

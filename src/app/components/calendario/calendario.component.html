@@ -5,7 +5,7 @@
             <div class="card-body">
                 <!-- [disabled]="esMiCata(cata)" -->
                 <mat-list-item 
-                (click)="editarCata(cata)"
+                (click)="handleClickCata(cata)"
                 [ngStyle]="{'background-color': hayCataHoy(cata.fecha) ? 'aquamarine' : 'null'}">
                     <mat-icon matListIcon *ngIf="!hayCataHoy(cata.fecha)">restaurant</mat-icon>
                     <mat-icon matListIcon *ngIf="hayCataHoy(cata.fecha)">dinner_dining</mat-icon>

@@ -269,10 +269,15 @@ export class CalendarioComponent implements OnInit {
   esMiCata(cata: Cata){
     return cata.telefono == this.user?.telefono
   }
-  editarCata(cata: Cata) {
+  handleClickCata(cata: Cata) {
     if(this.esMiCata(cata)) {
+      // Editar mi cata
       this.cataParaEditar = cata;
       this.estadoCalendario = Constants.ESTADOS_CALENDARIO.EDITAR_CATA;
+    } else if(cata.votacionesAbiertas) {
+      // Pasar al componente de las votaciones
+      localStorage.setItem('currentCata', JSON.stringify(cata));
+      this.router.navigate(['puntuar']);
     }
   }
   

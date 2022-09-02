@@ -11,5 +11,10 @@ const Constants = {
         VER_FECHAS: 'ver_fechas',
         EDITAR_CATA: 'editar_cata'
     },
+    ESTADOS_PUNTUAR: {
+        ENTRANTE: 'entrante',
+        PRINCIPAL: 'principal',
+        POSTRE: 'postre'
+    }
 };
 export default Constants;
