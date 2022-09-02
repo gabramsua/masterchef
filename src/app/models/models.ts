@@ -22,6 +22,7 @@ export interface Cata {
     fotoEntrante?: string;
     fotoPrincipal?: string;
     fotoPostre?: string;
+    votacionesAbiertas?: boolean;
 }
 
 export interface FechaPropuesta {

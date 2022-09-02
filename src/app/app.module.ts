@@ -16,8 +16,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon'
 import { MatStepperModule } from '@angular/material/stepper'; 
 import { MatListModule } from '@angular/material/list'; 
-import  {MatCardModule } from '@angular/material/card';
-import  {MatExpansionModule } from '@angular/material/expansion'
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -77,6 +78,7 @@ import { EditarCataComponent } from './components/editar-cata/editar-cata.compon
     MatButtonToggleModule,
     MatCardModule,
     MatExpansionModule,
+    MatSlideToggleModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),

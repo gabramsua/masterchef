@@ -235,13 +235,14 @@ export class CalendarioComponent implements OnInit {
       nombre: this.user.nombre,
       telefono: this.user.telefono,
       fecha: this.fechasPropuestas[this.indexFechaAbierta].id,
-      nombreEntrante: 'Sin nombre entrante',
-      descripcionEntrante: 'Sin descripción entrante',
-      nombrePrincipal: 'Sin nombre principal',
-      descripcionPrincipal: 'Sin descripción principal',
-      nombrePostre: 'Sin nombre postre',
-      descripcionPostre: 'Sin descripción postre',
-      isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo
+      nombreEntrante: 'Sin nombre de entrante',
+      descripcionEntrante: 'Sin descripción de entrante',
+      nombrePrincipal: 'Sin nombre de principal',
+      descripcionPrincipal: 'Sin descripción de principal',
+      nombrePostre: 'Sin nombre de postre',
+      descripcionPostre: 'Sin descripción de postre',
+      isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo,
+      votacionesAbiertas: false
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
 
