@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import constants from 'src/constants';
-import { Cata, FechaPropuesta, User } from 'src/app/models/models';
+import { Cata, FechaPropuesta, User, Valoracion } from 'src/app/models/models';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import Constants from 'src/constants';
+import { PuntuacionesDeCata } from '../../models/models';
 
 @Component({
   selector: 'app-calendario',
@@ -33,6 +35,8 @@ export class CalendarioComponent implements OnInit {
   usuariosEnContraModal: string[] = [];
   indexFechaAbierta: number= 0;
 
+  cataParaEditar!: Cata;
+
   constructor(
     public _service: AuthService,
     private _formBuilder: FormBuilder,
@@ -49,6 +53,12 @@ export class CalendarioComponent implements OnInit {
     this._service.fechaspropuestas$.subscribe( fechas => {
       // Sort Fechas Propuestas by Date DESC
       fechas.sort((a, b) => (moment(a.id, 'DD-MM-YYYY').toDate().valueOf() > moment(b.id, 'DD-MM-YYYY').toDate().valueOf()) ? 1 : -1)
+
+      // Si las fechas propuestas son anteriores a la fecha actual => DESCARTAR
+      const fechasADescartar = fechas.filter((elem: FechaPropuesta) => moment(elem.id, 'DD-MM-YYYY').toDate() < this.hoy);
+      fechas = fechas.filter((elem: FechaPropuesta) => moment(elem.id, 'DD-MM-YYYY').toDate() >= this.hoy);
+      this.descartarFechasAntiguas(fechasADescartar)
+
       this.fechasPropuestas = fechas.filter((elem: FechaPropuesta) => !elem.descartada && !elem.establecida);
     })
 
@@ -71,7 +81,7 @@ export class CalendarioComponent implements OnInit {
   getCatasProximas() {
     const catasProximas = [];
     for(const cata of this.catas ?? []){
-      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() >= this.hoy) {
+      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() >= this.hoy && !cata.acabada) {
         catasProximas.push(cata)
       }
     }
@@ -80,7 +90,7 @@ export class CalendarioComponent implements OnInit {
   getCatasAntiguas() {
     const catasAntiguas = [];
     for(const cata of this.catas ?? []){
-      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() < this.hoy) {
+      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() < this.hoy || cata.acabada) {
         catasAntiguas.push(cata)
       }
     }
@@ -106,7 +116,8 @@ export class CalendarioComponent implements OnInit {
   getFechasPropuestas() {
     this._service.getAll(constants.END_POINTS.FECHAS_PROPUESTAS)
   }
-  goBack() {
+  goBack(reload = false) {
+    if(reload) this.getAllCatas();
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
   proponerFecha() {
@@ -154,7 +165,9 @@ export class CalendarioComponent implements OnInit {
     localStorage.setItem('currentCata', JSON.stringify(cata));
     this.router.navigate(['verCata']);
   }
-  isAlmuerzo(index:number){
+  isAlmuerzo(index:number) {
+    // TODO: No muestra la luna, sólo el sol
+    console.log('IS ALMUERZO?', this.fechasPropuestas[index].isAlmuerzo)
     return this.fechasPropuestas[index].isAlmuerzo;
   }
   openModalFechaPropuesta(index: number) {
@@ -226,15 +239,17 @@ export class CalendarioComponent implements OnInit {
       nombre: this.user.nombre,
       telefono: this.user.telefono,
       fecha: this.fechasPropuestas[this.indexFechaAbierta].id,
-      nombreEntrante: '',
-      descripcionEntrante: '',
-      nombrePrincipal: '',
-      descripcionPrincipal: '',
-      nombrePostre: '',
-      descripcionPostre: '',
-      isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo
+      nombreEntrante: 'Sin nombre de entrante',
+      descripcionEntrante: 'Sin descripción de entrante',
+      nombrePrincipal: 'Sin nombre de principal',
+      descripcionPrincipal: 'Sin descripción de principal',
+      nombrePostre: 'Sin nombre de postre',
+      descripcionPostre: 'Sin descripción de postre',
+      isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo,
+      votacionesAbiertas: false
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
+    this.crearPuntuacionesVacias(cata.id);
 
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
@@ -245,6 +260,47 @@ export class CalendarioComponent implements OnInit {
       this.fechasPropuestas[this.indexFechaAbierta].id, 
       this.fechasPropuestas[this.indexFechaAbierta])
     this.sweetAlert()
+  }
+  descartarFechasAntiguas(fechas: any[]){
+    fechas.map((elem:any) => {
+      elem.descartada = true;
+      this._service.update(
+        constants.END_POINTS.FECHAS_PROPUESTAS, 
+        elem.id, 
+        elem)
+    })
+  }
+  crearPuntuacionesVacias(id:string) {
+    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {key:'value'}) // no se puede crear un objeto vacío
+    // Jueces
+    const jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
+    jueces.map((juez:User) => {
+      if(juez.telefono !== this.user.telefono) {
+        const valoracion: Valoracion = {
+          cantidad: 0,
+          estetica: 0,
+          sabor: 0,
+          nombre: juez.nombre,
+        }
+        const puntuacionDeCata = { [juez.telefono]: [valoracion, valoracion, valoracion, juez.nombre] };
+        this._service.update(constants.END_POINTS.PUNTUACIONES, id, puntuacionDeCata)
+      }
+    })
+  }
+
+  esMiCata(cata: Cata){
+    return cata.telefono == this.user?.telefono
+  }
+  handleClickCata(cata: Cata) {
+    if(this.esMiCata(cata)) {
+      // Editar mi cata
+      this.cataParaEditar = cata;
+      this.estadoCalendario = Constants.ESTADOS_CALENDARIO.EDITAR_CATA;
+    } else if(cata.votacionesAbiertas) {
+      // Pasar al componente de las votaciones
+      localStorage.setItem('currentCata', JSON.stringify(cata));
+      this.router.navigate(['puntuar']);
+    }
   }
   
   sweetAlert(){
@@ -268,7 +324,8 @@ export class CalendarioComponent implements OnInit {
     //   dificultad: ['', Validators.required]
     // });
   }
-  errorAlert(error: string){
+  errorAlert(error: string) {
+    // TODO: ¿Guardar esto es necesario? ver línea 214
     this._service.update(
       constants.END_POINTS.FECHAS_PROPUESTAS, 
       this.fechasPropuestas[this.indexFechaAbierta].id, 

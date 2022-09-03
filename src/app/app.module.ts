@@ -16,7 +16,10 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon'
 import { MatStepperModule } from '@angular/material/stepper'; 
 import { MatListModule } from '@angular/material/list'; 
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +40,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { VerCataComponent } from './components/ver-cata/ver-cata.component';
 import { PlatoDetailComponent } from './components/plato-detail/plato-detail.component';
 import { PuntuacionDetailComponent } from './components/puntuacion-detail/puntuacion-detail.component';
+import { EditarCataComponent } from './components/editar-cata/editar-cata.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,8 @@ import { PuntuacionDetailComponent } from './components/puntuacion-detail/puntua
     HomeComponent,
     VerCataComponent,
     PlatoDetailComponent,
-    PuntuacionDetailComponent
+    PuntuacionDetailComponent,
+    EditarCataComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +78,9 @@ import { PuntuacionDetailComponent } from './components/puntuacion-detail/puntua
     MatListModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatExpansionModule,
+    MatSlideToggleModule,
+    MatSliderModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),

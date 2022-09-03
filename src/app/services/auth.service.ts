@@ -66,7 +66,6 @@ export class AuthService {
           break;
         case constants.END_POINTS.USERS:
           localStorage.setItem('jueces', JSON.stringify(rows));
-          this.jueces$.next(rows);
           break;
         default:
           break;
@@ -102,7 +101,8 @@ export class AuthService {
   }
 
   login(collection: any, phone: string) {
-    getDoc(doc(this.firebase, collection, '645303663'))
+    getDoc(doc(this.firebase, collection, phone))
+    // getDoc(doc(this.firebase, collection, '645303663'))
     .then((data:any) => {
       if(data.data()){
         localStorage.setItem('currentUser', JSON.stringify(data.data()));

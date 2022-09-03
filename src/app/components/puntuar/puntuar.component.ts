@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/models';
+import { AuthService } from 'src/app/services/auth.service';
+import constants from 'src/constants';
 
 @Component({
   selector: 'app-puntuar',
@@ -6,10 +11,67 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./puntuar.component.scss']
 })
 export class PuntuarComponent implements OnInit {
+  currentUser!: User;
+  currentCata!: Cata;
+  step = -1;
 
-  constructor() { }
+  puntuacionesEntrante: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
+  puntuacionesPrincipal: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
+  puntuacionesPostre: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
+  puntuacionesEnCurso!: PuntuacionesDeCata;
+
+  constructor(
+    public _service: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.currentCata = JSON.parse(localStorage.getItem('currentCata') || '{}');
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Cargar las puntuaciones guardadas de la cata en curso
+    this.getPuntuacionesEnCurso();
+    this._service.currentGet$.subscribe( puntuaciones => {
+      if(puntuaciones != undefined) {
+        this.puntuacionesEntrante = puntuaciones[this.currentUser.telefono][0];
+        this.puntuacionesPrincipal = puntuaciones[this.currentUser.telefono][1];
+        this.puntuacionesPostre = puntuaciones[this.currentUser.telefono][2];
+      }
+    })
+  }
+  getPuntuacionesEnCurso() {
+    this._service.get(constants.END_POINTS.PUNTUACIONES, this.currentCata.id);
+  }
+
+  calcularMediaEntrante() {
+    return ((this.puntuacionesEntrante.cantidad + this.puntuacionesEntrante.estetica + this.puntuacionesEntrante.sabor) / 3).toPrecision(2); // toFixed(2)
+  }
+  calcularMediaPrincipal() {
+    return ((this.puntuacionesPrincipal.cantidad + this.puntuacionesPrincipal.estetica + this.puntuacionesPrincipal.sabor) / 3).toPrecision(2); // toFixed(2)
+  }
+  calcularMediaPostre() {
+    return ((this.puntuacionesPostre.cantidad + this.puntuacionesPostre.estetica + this.puntuacionesPostre.sabor) / 3).toPrecision(2); // toFixed(2)
+  }
+
+  save() {
+    this.puntuacionesEntrante.nombre = this.currentUser?.nombre;
+    this.puntuacionesPrincipal.nombre = this.currentUser?.nombre;
+    this.puntuacionesPostre.nombre = this.currentUser?.nombre;
+    
+    const puntuacionDeCata = { [this.currentUser?.telefono]: [this.puntuacionesEntrante, this.puntuacionesPrincipal, this.puntuacionesPostre, this.currentUser?.nombre] };
+    this._service.update(constants.END_POINTS.PUNTUACIONES, this.currentCata.id, puntuacionDeCata)
+  }
+
+  goBack(){
+    this.router.navigate(['calendario']);
+  }
+  setStep(index: number) {
+    this.step = index;
+  }
+  nextStep() {
+    this.step++;
+  }
+  prevStep() {
+    this.step--;
   }
 
 }

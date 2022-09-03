@@ -58,12 +58,14 @@ export class VerCataComponent implements OnInit {
     // Seleccionar el plato dentro de cada juez
     this.puntuacionesDeLaCata.map( (elem:any) => {
       this.jueces.map((juez:User) => {
-        this.puntuacionesDePlatoSeleccionado.push({
-          nombre: elem[juez.telefono][3],
-          cantidad: elem[juez.telefono][platoSeleccionado].cantidad,
-          estetica: elem[juez.telefono][platoSeleccionado].estetica,
-          sabor:elem[juez.telefono][platoSeleccionado].sabor,
-        })
+        if(elem[juez.telefono] !== undefined) {        
+          this.puntuacionesDePlatoSeleccionado.push({
+            cantidad: elem[juez.telefono][platoSeleccionado]?.cantidad,
+            estetica: elem[juez.telefono][platoSeleccionado]?.estetica,
+            sabor:elem[juez.telefono][platoSeleccionado]?.sabor,
+            nombre: elem[juez.telefono][platoSeleccionado].nombre,
+          })
+        }
       })
     })
   }

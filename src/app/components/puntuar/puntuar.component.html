@@ -1,1 +1,147 @@
-<p>puntuar works!</p>
+<div class="botones d-flex justify-content-between">
+    <button type="button" class="btn btn-link text-decoration-none" (click)="goBack()">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-chevron-left"></i>&nbsp;Atrás
+        </div>
+    </button>
+    <span>Una tripa vacía es un corazón sin alegría</span>
+</div>
+<mat-accordion class="editar-cata-container">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Entrante
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ currentCata.nombreEntrante }}
+          <!-- <mat-icon>soup_kitchen</mat-icon> -->
+          <span>{{ calcularMediaEntrante() }}</span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div class="d-flex flex-column justify-content-start">
+        <span>Cantidad: {{ puntuacionesEntrante.cantidad }}</span>
+        <mat-slider  [(ngModel)]="puntuacionesEntrante.cantidad"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Estética: {{ puntuacionesEntrante.estetica }}</span>
+        <mat-slider [(ngModel)]="puntuacionesEntrante.estetica"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Sabor: {{ puntuacionesEntrante.sabor }}</span>
+        <mat-slider [(ngModel)]="puntuacionesEntrante.sabor"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+      </div>
+  
+   
+
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Principal
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ currentCata.nombrePrincipal }}
+          <span>{{ calcularMediaPrincipal() }}</span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div class="d-flex flex-column justify-content-start">
+        <span>Cantidad: {{ puntuacionesPrincipal.cantidad }}</span>
+        <mat-slider  [(ngModel)]="puntuacionesPrincipal.cantidad"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Estética: {{ puntuacionesPrincipal.estetica }}</span>
+        <mat-slider [(ngModel)]="puntuacionesPrincipal.estetica"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Sabor: {{ puntuacionesPrincipal.sabor }}</span>
+        <mat-slider [(ngModel)]="puntuacionesPrincipal.sabor"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+      </div>
+
+
+  
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Postre &nbsp;
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ currentCata.nombrePostre }}
+          <span>{{ calcularMediaPostre() }}</span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <div class="d-flex flex-column justify-content-start">
+        <span>Cantidad: {{ puntuacionesPostre.cantidad }}</span>
+        <mat-slider  [(ngModel)]="puntuacionesPostre.cantidad"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Estética: {{ puntuacionesPostre.estetica }}</span>
+        <mat-slider [(ngModel)]="puntuacionesPostre.estetica"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+        <span>Sabor: {{ puntuacionesPostre.sabor }}</span>
+        <mat-slider [(ngModel)]="puntuacionesPostre.sabor"
+            thumbLabel
+            tickInterval="1"
+            step="1"
+            min="0"
+            max="10"
+            aria-label="units"></mat-slider>
+      </div>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="save()">Guardar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+  
