@@ -160,7 +160,7 @@
 </div>
 
 <div *ngIf="estadoCalendario === 'editar_cata'">
-    <editar-cata (dispatchGoBack)="goBack()" [cataParaEditar]="cataParaEditar"></editar-cata>
+    <editar-cata (dispatchGoBack)="goBack(true)" [cataParaEditar]="cataParaEditar"></editar-cata>
 </div>
 
 <!-- MODAL FECHA PROPUESTA -->

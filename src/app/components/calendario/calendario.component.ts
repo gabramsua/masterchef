@@ -81,7 +81,7 @@ export class CalendarioComponent implements OnInit {
   getCatasProximas() {
     const catasProximas = [];
     for(const cata of this.catas ?? []){
-      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() >= this.hoy) {
+      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() >= this.hoy && !cata.acabada) {
         catasProximas.push(cata)
       }
     }
@@ -90,7 +90,7 @@ export class CalendarioComponent implements OnInit {
   getCatasAntiguas() {
     const catasAntiguas = [];
     for(const cata of this.catas ?? []){
-      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() < this.hoy) {
+      if(moment(cata.fecha, 'DD-MM-YYYY').toDate() < this.hoy || cata.acabada) {
         catasAntiguas.push(cata)
       }
     }
@@ -116,7 +116,8 @@ export class CalendarioComponent implements OnInit {
   getFechasPropuestas() {
     this._service.getAll(constants.END_POINTS.FECHAS_PROPUESTAS)
   }
-  goBack() {
+  goBack(reload = false) {
+    if(reload) this.getAllCatas();
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
   proponerFecha() {
@@ -165,6 +166,7 @@ export class CalendarioComponent implements OnInit {
     this.router.navigate(['verCata']);
   }
   isAlmuerzo(index:number) {
+    // TODO: No muestra la luna, sólo el sol
     console.log('IS ALMUERZO?', this.fechasPropuestas[index].isAlmuerzo)
     return this.fechasPropuestas[index].isAlmuerzo;
   }
@@ -273,15 +275,16 @@ export class CalendarioComponent implements OnInit {
     // Jueces
     const jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
     jueces.map((juez:User) => {
-
-      const valoracion: Valoracion = {
-        cantidad: 0,
-        estetica: 0,
-        sabor: 0,
-        nombre: juez.nombre,
+      if(juez.telefono !== this.user.telefono) {
+        const valoracion: Valoracion = {
+          cantidad: 0,
+          estetica: 0,
+          sabor: 0,
+          nombre: juez.nombre,
+        }
+        const puntuacionDeCata = { [juez.telefono]: [valoracion, valoracion, valoracion, juez.nombre] };
+        this._service.update(constants.END_POINTS.PUNTUACIONES, id, puntuacionDeCata)
       }
-      const puntuacionDeCata = { [juez.telefono]: [valoracion, valoracion, valoracion, juez.nombre] };
-      this._service.update(constants.END_POINTS.PUNTUACIONES, id, puntuacionDeCata)
     })
   }
 

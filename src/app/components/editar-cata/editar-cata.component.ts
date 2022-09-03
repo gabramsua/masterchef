@@ -22,7 +22,7 @@ export class EditarCataComponent implements OnInit {
   goBack() {
     this.dispatchGoBack.next(null);
   }
-  save(){
+  save(acabada = false) {
     const cata: Cata = {
       id: this.cataParaEditar.id,
       nombre: this.cataParaEditar.nombre,
@@ -35,8 +35,10 @@ export class EditarCataComponent implements OnInit {
       descripcionPrincipal: this.cataParaEditar.descripcionPrincipal,
       nombrePostre: this.cataParaEditar.nombrePostre,
       descripcionPostre: this.cataParaEditar.descripcionPostre,
-      votacionesAbiertas: this.cataParaEditar.votacionesAbiertas,
+      votacionesAbiertas:  acabada ? false : this.cataParaEditar.votacionesAbiertas,
+      acabada: acabada
     };
+
     this._service.update(constants.END_POINTS.CATAS, this.cataParaEditar.id, cata);
     this.goBack();
   }
