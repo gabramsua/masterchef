@@ -63,7 +63,7 @@ export class VerCataComponent implements OnInit {
             cantidad: elem[juez.telefono][platoSeleccionado]?.cantidad,
             estetica: elem[juez.telefono][platoSeleccionado]?.estetica,
             sabor:elem[juez.telefono][platoSeleccionado]?.sabor,
-            nombre: elem[juez.telefono][3],
+            nombre: elem[juez.telefono][platoSeleccionado].nombre,
           })
         }
       })
