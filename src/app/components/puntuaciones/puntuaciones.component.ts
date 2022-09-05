@@ -132,18 +132,32 @@ export class PuntuacionesComponent implements OnInit {
 
   handleClickPlato(plato: any) {
     // Buscar plato en las catas y traerse la información y la foto
-    console.log('BUSCAR EL PLATO', plato)
-    // console.log('CATAS', this.catas)
+    let platoAux: Plato = {};
 
     this.catas.map((cata:Cata) => {
-      console.log(cata.id)
       if(cata.id == plato.fecha) {
-        console.log(cata)
+        // No sabemos si el plato es entrante, principal o postre => pero tenemos su nombre
+        if(cata.nombreEntrante == plato.nombrePlato){
+          platoAux.nombre = cata.nombreEntrante
+          platoAux.descripcion = cata.descripcionEntrante;
+          platoAux.foto = cata.fotoEntrante;
+        }
+        else if(cata.nombrePrincipal == plato.nombrePlato){
+          platoAux.nombre = cata.nombrePrincipal
+          platoAux.descripcion = cata.descripcionPrincipal;
+          platoAux.foto = cata.fotoPrincipal;
+        }
+        else if(cata.nombrePostre == plato.nombrePlato){
+          platoAux.nombre = cata.nombrePostre
+          platoAux.descripcion = cata.descripcionPostre;
+          platoAux.foto = cata.fotoPostre;
+        }
+
+        this.platoSeleccionado = platoAux;
       }
     })
 
 
-    this.platoSeleccionado = plato;
   }
 
 }
