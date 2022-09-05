@@ -3,7 +3,10 @@ import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/model
 import constants from 'src/constants';
 import { AuthService } from 'src/app/services/auth.service';
 import { Puntuaciones } from '../../models/models';
-
+interface Orden {
+  value: string;
+  viewValue: string;
+}
 @Component({
   selector: 'app-puntuaciones',
   templateUrl: './puntuaciones.component.html',
@@ -14,6 +17,13 @@ export class PuntuacionesComponent implements OnInit {
   puntuaciones!: Puntuaciones[];
   catas!: Cata[];
   puntuacionesDeJuezSeleccionado: any; // PuntuacionesDeCata[] = [];
+
+  ordenes: Orden[] = [
+    {viewValue: 'Mayor a Menor', value: '0'},
+    {viewValue: 'Menor a Mayor', value: '1'},
+    // {viewValue: 'Cronológico', value: '2'},
+  ];
+  selectedOrden = this.ordenes[0].value;
 
   constructor(public _service: AuthService,) { }
 
@@ -53,8 +63,9 @@ export class PuntuacionesComponent implements OnInit {
         puntuacionesOrdenada.push(elem[juez.telefono])
       }
     })
-    // Sort por puntuación media
-    puntuacionesOrdenada[0].sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
+
+    // // Sort por puntuación media
+    // puntuacionesOrdenada[0].sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
 
     // this.puntuacionesDeJuezSeleccionado = [...puntuacionesOrdenada];
     // this.puntuacionesDeJuezSeleccionado = this.puntuacionesDeJuezSeleccionado[0];
@@ -63,9 +74,31 @@ export class PuntuacionesComponent implements OnInit {
       // Evitamos el field nombre
       if(typeof(x) !== 'string')this.puntuacionesDeJuezSeleccionado.push(x);
     })
+
+    this.selectOrden(this.selectedOrden);
+    // this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
   }
   calcularMedia(puntos: Valoracion) {
     return ((puntos.cantidad + puntos.estetica + puntos.sabor) / 3).toPrecision(2); // toFixed(2)
+  }
+  selectOrden(orden: string) {
+    // this.selectedOrden = (event.target as HTMLSelectElement).value;
+    console.log('ORDENAR POR ', orden)
+    this.selectedOrden =  this.ordenes[parseInt(orden)].value
+    switch (orden){
+      case '0':
+        this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
+        break;
+      case '1':
+        this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) > this.calcularMedia(b) ? 1 : -1)
+        break;
+      // case '2':
+      //   this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => a < b ? 1 : -1)
+      //   break;
+      default:
+        this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
+        break;
+    }
   }
 
 }

@@ -9,7 +9,15 @@
                 </mat-selection-list>
             </div>
             <div class="w-50 p-3 puntuaciones-container">
-                <mat-accordion class="editar-cata-container" *ngFor="let puntuacion of puntuacionesDeJuezSeleccionado; index as i">
+                <mat-form-field appearance="fill">
+                    <mat-label>Orden</mat-label>
+                    <!-- <select matNativeControl (change)="selectOrden($event)"> -->
+                    <mat-select [(value)]="selectedOrden" (selectionChange)="selectOrden($event.value)">
+                        <mat-option [value]="option.value" *ngFor="let option of ordenes">{{ option.viewValue }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                <mat-accordion class="accordion-container" *ngFor="let puntuacion of puntuacionesDeJuezSeleccionado; index as i">
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -21,7 +29,6 @@
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                     <div>
-                        <!-- {{ puntuacion | json }} -->
                         <p class="card-text d-flex justify-content-center">{{ puntuacion.nombrePlato }}</p>
                         <p class="card-text d-flex justify-content-between"><span>Cantidad: </span>{{ puntuacion.cantidad }}</p>
                         <p class="card-text d-flex justify-content-between"><span>Estética: </span>{{ puntuacion.estetica }}</p>

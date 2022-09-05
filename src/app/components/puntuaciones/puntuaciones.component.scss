@@ -1,8 +1,11 @@
 @import '../../variables.scss';
 
 .puntuaciones-container {
-    margin-top: 40px;
+    // margin-top: 40px;
     overflow: scroll;
     border-left: 1px solid $azul-letra;
     max-height: 80vh;
+}
+mat-expansion-panel, .mat-accordion>.mat-expansion-panel-spacing {
+    margin-bottom: 10px;
 }
