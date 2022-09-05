@@ -1,10 +1,15 @@
 @import '../../variables.scss';
-
+mat-form-field {
+    width: -webkit-fill-available;
+}
 .puntuaciones-container {
     // margin-top: 40px;
     overflow: scroll;
     border-left: 1px solid $azul-letra;
     max-height: 80vh;
+}
+.nombre-plato {
+    text-decoration: underline;
 }
 mat-expansion-panel, .mat-accordion>.mat-expansion-panel-spacing {
     margin-bottom: 10px;

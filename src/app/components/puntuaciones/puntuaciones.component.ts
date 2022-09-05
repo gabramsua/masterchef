@@ -63,27 +63,23 @@ export class PuntuacionesComponent implements OnInit {
         puntuacionesOrdenada.push(elem[juez.telefono])
       }
     })
-
-    // // Sort por puntuación media
-    // puntuacionesOrdenada[0].sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
-
-    // this.puntuacionesDeJuezSeleccionado = [...puntuacionesOrdenada];
-    // this.puntuacionesDeJuezSeleccionado = this.puntuacionesDeJuezSeleccionado[0];
-
+    
+    console.log(puntuacionesOrdenada[0])
     puntuacionesOrdenada[0].map((x:any) => {
       // Evitamos el field nombre
-      if(typeof(x) !== 'string')this.puntuacionesDeJuezSeleccionado.push(x);
+      if(typeof(x) !== 'string' && parseInt(this.calcularMedia(x)) > 0) {
+        this.puntuacionesDeJuezSeleccionado.push(x);
+      }
     })
 
     this.selectOrden(this.selectedOrden);
-    // this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
   }
+
   calcularMedia(puntos: Valoracion) {
     return ((puntos.cantidad + puntos.estetica + puntos.sabor) / 3).toPrecision(2); // toFixed(2)
   }
+
   selectOrden(orden: string) {
-    // this.selectedOrden = (event.target as HTMLSelectElement).value;
-    console.log('ORDENAR POR ', orden)
     this.selectedOrden =  this.ordenes[parseInt(orden)].value
     switch (orden){
       case '0':
