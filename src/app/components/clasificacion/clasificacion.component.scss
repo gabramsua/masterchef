@@ -1,0 +1,37 @@
+@import '../../variables.scss';
+
+h1 {
+    color: $azul-letra;
+    font-family: $fuente_titles;
+    margin-top: -1.5em;
+    margin-bottom: 1em;
+}
+ul {
+    padding-inline-start: 0;
+    padding-bottom: 2rem;
+}
+
+li {
+    border: 1px solid $gris-borde;
+    border-radius: 20px;
+    list-style-type: none; /* Remove bullets */
+    padding: 1rem;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: #FEFEFE;
+}
+.position {
+    margin-right: 10px;
+}
+.vl {
+    border-left: 4px solid $ghostwhite; // $primary-color;
+    height: inherit;
+}
+.datos {
+    width: -webkit-fill-available;
+}
+i {
+    margin-right: 1vw;
+}

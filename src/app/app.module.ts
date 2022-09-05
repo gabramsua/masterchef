@@ -42,6 +42,8 @@ import { VerCataComponent } from './components/ver-cata/ver-cata.component';
 import { PlatoDetailComponent } from './components/plato-detail/plato-detail.component';
 import { PuntuacionDetailComponent } from './components/puntuacion-detail/puntuacion-detail.component';
 import { EditarCataComponent } from './components/editar-cata/editar-cata.component';
+import { CutPhonePipePipe } from './shared/cut-phone-pipe.pipe';
+import { CutApellidosPipePipe } from './shared/cut-apellidos-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,10 @@ import { EditarCataComponent } from './components/editar-cata/editar-cata.compon
     VerCataComponent,
     PlatoDetailComponent,
     PuntuacionDetailComponent,
-    EditarCataComponent
+    EditarCataComponent,
+    
+    CutPhonePipePipe,
+    CutApellidosPipePipe,
   ],
   imports: [
     BrowserModule,
