@@ -1,0 +1,8 @@
+@import '../../variables.scss';
+
+.puntuaciones-container {
+    margin-top: 40px;
+    overflow: scroll;
+    border-left: 1px solid $azul-letra;
+    max-height: 80vh;
+}

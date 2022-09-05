@@ -271,7 +271,7 @@ export class CalendarioComponent implements OnInit {
     })
   }
   crearPuntuacionesVacias(id:string) {
-    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {key:'value'}) // no se puede crear un objeto vacío
+    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {cocinero:this.user.nombre}) // no se puede crear un objeto vacío
     // Jueces
     const jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
     jueces.map((juez:User) => {

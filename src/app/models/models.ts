@@ -4,6 +4,7 @@ export interface User {
     telefono: string;
     cata1?: string;
     cata2?: string;
+    isAspirante: boolean;
 }
 
 export interface Cata {
@@ -52,4 +53,9 @@ export interface Valoracion {
     estetica: number;
     sabor: number;
     nombre: string;
+    nombrePlato?: string;
+}
+
+export interface Puntuaciones {
+    puntuacion: PuntuacionesDeCata[];
 }

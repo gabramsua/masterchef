@@ -16,15 +16,15 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import constants from 'src/constants';
-import { Cata, User, FechaPropuesta } from '../models/models';
+import { Cata, User, FechaPropuesta, Puntuaciones } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  items!: Observable<any[]>;
   catas$ = new Subject<Cata[]>();
   jueces$ = new Subject<User[]>();
+  puntuaciones$ = new Subject<Puntuaciones[]>();
   fechaspropuestas$ = new Subject<FechaPropuesta[]>();
   currentUser$ = new Subject<User>();
   currentGet$ = new Subject<any>();
@@ -66,6 +66,9 @@ export class AuthService {
           break;
         case constants.END_POINTS.USERS:
           localStorage.setItem('jueces', JSON.stringify(rows));
+          break;
+        case constants.END_POINTS.PUNTUACIONES:
+          this.puntuaciones$.next(rows);
           break;
         default:
           break;
