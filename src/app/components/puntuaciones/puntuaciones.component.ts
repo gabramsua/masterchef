@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/models';
 import constants from 'src/constants';
 import { AuthService } from 'src/app/services/auth.service';
-import { Puntuaciones } from '../../models/models';
+import { Puntuaciones, Plato } from '../../models/models';
 interface Orden {
   value: string;
   viewValue: string;
@@ -18,6 +18,10 @@ export class PuntuacionesComponent implements OnInit {
   catas!: Cata[];
   puntuacionesDeJuezSeleccionado: any; // PuntuacionesDeCata[] = [];
 
+  platos: any[] = [];
+  platosPuntuados: any[] = [];
+  platoSeleccionado!: Plato;
+
   ordenes: Orden[] = [
     {viewValue: 'Mayor a Menor', value: '0'},
     {viewValue: 'Menor a Mayor', value: '1'},
@@ -28,14 +32,16 @@ export class PuntuacionesComponent implements OnInit {
   constructor(public _service: AuthService,) { }
 
   ngOnInit(): void {
+    this.jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
+    
     this._service.puntuaciones$.subscribe( puntuaciones => {
       this.puntuaciones = puntuaciones;
+      this.getAllPlatos();
     })
     this._service.catas$.subscribe( catas => {
       this.catas = catas;
     })
 
-    this.jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
 
     this.getAllPuntuaciones();
     this.getAllCatas();
@@ -64,15 +70,16 @@ export class PuntuacionesComponent implements OnInit {
       }
     })
     
-    console.log(puntuacionesOrdenada[0])
-    puntuacionesOrdenada[0].map((x:any) => {
-      // Evitamos el field nombre
-      if(typeof(x) !== 'string' && parseInt(this.calcularMedia(x)) > 0) {
-        this.puntuacionesDeJuezSeleccionado.push(x);
-      }
-    })
+    if(puntuacionesOrdenada[0] != undefined){
+      puntuacionesOrdenada[0].map((x:any) => {
+        // Evitamos el field nombre
+        if(typeof(x) !== 'string' && parseInt(this.calcularMedia(x)) > 0) {
+          this.puntuacionesDeJuezSeleccionado.push(x);
+        }
+      })
 
-    this.selectOrden(this.selectedOrden);
+      this.selectOrden(this.selectedOrden);
+    }
   }
 
   calcularMedia(puntos: Valoracion) {
@@ -95,6 +102,48 @@ export class PuntuacionesComponent implements OnInit {
         this.puntuacionesDeJuezSeleccionado.sort((a:Valoracion, b:Valoracion) => this.calcularMedia(a) < this.calcularMedia(b) ? 1 : -1)
         break;
     }
+  }
+
+  getAllPlatos() {
+    // Queremos todos los platos y sus valoraciones medias. 
+    // Habrá que asociar las puntuaciones -que ya tenemos- con los platos a los que pertenecen
+    
+    let valoraciones: any[] = [];
+    this.puntuaciones.map((puntuacion: any) => {
+      // console.log(puntuacion)
+      this.jueces.map((juez: any) => {
+        valoraciones.push( {...puntuacion[juez.telefono], fecha: puntuacion.id} );
+      })
+    })
+
+    valoraciones.map((valor:any) => {
+      if(Object.keys(valor).length > 1){
+        this.platos.push({ ...valor[0], media: this.calcularMedia(valor[0]), fecha: valor.fecha });
+        this.platos.push({ ...valor[1], media: this.calcularMedia(valor[1]), fecha: valor.fecha });
+        this.platos.push({ ...valor[2], media: this.calcularMedia(valor[2]), fecha: valor.fecha });
+      }
+    })
+
+    this.platos.sort((a,b) => a.media - b.media).reverse();// .filter(plato => parseInt(plato.media) > 0);
+    this.platos.map((plato: any) => {
+      if(plato.media !== '0.0')this.platosPuntuados.push(plato)
+    })
+  }
+
+  handleClickPlato(plato: any) {
+    // Buscar plato en las catas y traerse la información y la foto
+    console.log('BUSCAR EL PLATO', plato)
+    // console.log('CATAS', this.catas)
+
+    this.catas.map((cata:Cata) => {
+      console.log(cata.id)
+      if(cata.id == plato.fecha) {
+        console.log(cata)
+      }
+    })
+
+
+    this.platoSeleccionado = plato;
   }
 
 }

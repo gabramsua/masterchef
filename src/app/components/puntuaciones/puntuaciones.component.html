@@ -1,4 +1,5 @@
 <mat-tab-group mat-align-tabs="center">
+    
     <mat-tab label="Jueces">
         <div class="d-flex">
             <div class="w-33 p-3 jueces-container">
@@ -8,7 +9,7 @@
                     </mat-list-option>
                 </mat-selection-list>
             </div>
-            <div class="p-3 puntuaciones-container">
+            <div class="p-3 detalle-container">
                 
                 <ng-container *ngIf="puntuacionesDeJuezSeleccionado == undefined">
                     Selecciona un juez.
@@ -21,7 +22,6 @@
                 <ng-container *ngIf="puntuacionesDeJuezSeleccionado != undefined && puntuacionesDeJuezSeleccionado.length > 0">
                     <mat-form-field appearance="fill">
                         <mat-label>Orden</mat-label>
-                        <!-- <select matNativeControl (change)="selectOrden($event)"> -->
                         <mat-select [(value)]="selectedOrden" (selectionChange)="selectOrden($event.value)">
                             <mat-option [value]="option.value" *ngFor="let option of ordenes">{{ option.viewValue }}</mat-option>
                         </mat-select>
@@ -51,8 +51,19 @@
             </div>
         </div>
     </mat-tab>
-    
+
     <mat-tab label="Platos">
-        Content 2
+        <div class="d-flex">
+            <div class="w-33 p-3 platos-container">                
+                <mat-selection-list #plato [multiple]="false">
+                    <mat-list-option *ngFor="let plato of platosPuntuados" [value]="plato" (click)="handleClickPlato(plato)">
+                        {{ plato.media}} : {{ plato.nombrePlato }}
+                    </mat-list-option>
+                </mat-selection-list>
+            </div>
+            <div class="p-3 detalle-plato-container detalle-container">
+                <plato-detail [plato]="platoSeleccionado" *ngIf="platoSeleccionado"></plato-detail>
+            </div>
+        </div>
     </mat-tab>
   </mat-tab-group>

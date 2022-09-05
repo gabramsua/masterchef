@@ -55,8 +55,10 @@ export class PuntuarComponent implements OnInit {
   save() {
     this.puntuacionesEntrante.nombre = this.currentUser?.nombre;
     this.puntuacionesEntrante.nombrePlato = this.currentCata.nombreEntrante;
+    
     this.puntuacionesPrincipal.nombre = this.currentUser?.nombre;
     this.puntuacionesPrincipal.nombrePlato = this.currentCata.nombrePrincipal;
+    
     this.puntuacionesPostre.nombre = this.currentUser?.nombre;
     this.puntuacionesPostre.nombrePlato = this.currentCata.nombrePostre;
     

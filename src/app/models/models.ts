@@ -54,6 +54,7 @@ export interface Valoracion {
     sabor: number;
     nombre: string;
     nombrePlato?: string;
+    // descripcionPlato?: string;
 }
 
 export interface Puntuaciones {
