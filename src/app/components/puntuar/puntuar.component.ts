@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
@@ -15,9 +15,9 @@ export class PuntuarComponent implements OnInit {
   currentCata!: Cata;
   step = -1;
 
-  puntuacionesEntrante: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
-  puntuacionesPrincipal: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
-  puntuacionesPostre: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: ''};
+  puntuacionesEntrante: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: '', nombrePlato: ''};
+  puntuacionesPrincipal: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: '', nombrePlato: ''};
+  puntuacionesPostre: Valoracion = {cantidad: 0,estetica: 0,sabor: 0,nombre: '', nombrePlato: ''};
   puntuacionesEnCurso!: PuntuacionesDeCata;
 
   constructor(
@@ -54,11 +54,31 @@ export class PuntuarComponent implements OnInit {
 
   save() {
     this.puntuacionesEntrante.nombre = this.currentUser?.nombre;
-    this.puntuacionesPrincipal.nombre = this.currentUser?.nombre;
-    this.puntuacionesPostre.nombre = this.currentUser?.nombre;
+    this.puntuacionesEntrante.nombrePlato = this.currentCata.nombreEntrante;
     
-    const puntuacionDeCata = { [this.currentUser?.telefono]: [this.puntuacionesEntrante, this.puntuacionesPrincipal, this.puntuacionesPostre, this.currentUser?.nombre] };
+    this.puntuacionesPrincipal.nombre = this.currentUser?.nombre;
+    this.puntuacionesPrincipal.nombrePlato = this.currentCata.nombrePrincipal;
+    
+    this.puntuacionesPostre.nombre = this.currentUser?.nombre;
+    this.puntuacionesPostre.nombrePlato = this.currentCata.nombrePostre;
+    
+    const puntuacionDeCata = {
+      [this.currentUser?.telefono]: [
+        this.puntuacionesEntrante, 
+        this.puntuacionesPrincipal, 
+        this.puntuacionesPostre, 
+        this.currentUser?.nombre]
+    };
     this._service.update(constants.END_POINTS.PUNTUACIONES, this.currentCata.id, puntuacionDeCata)
+    this.sweetAlert();
+  }
+  sweetAlert(){
+    this.step = -1;
+    Swal.fire(
+      '¡Guardado!',
+      'Actualizamos los registros',
+      'success'
+    )
   }
 
   goBack(){

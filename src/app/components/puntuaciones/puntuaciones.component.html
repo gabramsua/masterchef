@@ -1,1 +1,69 @@
-<p>puntuaciones works!</p>
+<mat-tab-group mat-align-tabs="center">
+    
+    <mat-tab label="Jueces">
+        <div class="d-flex">
+            <div class="w-33 p-3 jueces-container">
+                <mat-selection-list #juez [multiple]="false">
+                    <mat-list-option *ngFor="let juez of jueces" [value]="juez" (click)="handleClickJuez(juez)">
+                    {{ juez.nombre }}
+                    </mat-list-option>
+                </mat-selection-list>
+            </div>
+            <div class="p-3 detalle-container">
+                
+                <ng-container *ngIf="puntuacionesDeJuezSeleccionado == undefined">
+                    Selecciona un juez.
+                </ng-container>
+
+                <ng-container *ngIf="puntuacionesDeJuezSeleccionado != undefined && puntuacionesDeJuezSeleccionado.length == 0">
+                    Aún no hay votaciones de este juez.
+                </ng-container>
+
+                <ng-container *ngIf="puntuacionesDeJuezSeleccionado != undefined && puntuacionesDeJuezSeleccionado.length > 0">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Orden</mat-label>
+                        <mat-select [(value)]="selectedOrden" (selectionChange)="selectOrden($event.value)">
+                            <mat-option [value]="option.value" *ngFor="let option of ordenes">{{ option.viewValue }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-accordion class="accordion-container" *ngFor="let puntuacion of puntuacionesDeJuezSeleccionado; index as i">
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{ puntuacion.cocinero }} 
+                                    <!-- el {{ puntuacion.fecha }} -->
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{ calcularMedia(puntuacion) }}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                        <div>
+                            <p class="card-text d-flex justify-content-center nombre-plato">{{ puntuacion.nombrePlato }}</p>
+                            <p class="card-text d-flex justify-content-between"><span>Cantidad: </span>{{ puntuacion.cantidad }}</p>
+                            <p class="card-text d-flex justify-content-between"><span>Estética: </span>{{ puntuacion.estetica }}</p>
+                            <p class="card-text d-flex justify-content-between"><span>Sabor: </span>{{ puntuacion.sabor }}</p>
+                        </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </ng-container>
+
+            </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab label="Platos">
+        <div class="d-flex">
+            <div class="w-33 p-3 platos-container">                
+                <mat-selection-list #plato [multiple]="false">
+                    <mat-list-option *ngFor="let plato of platosPuntuados" [value]="plato" (click)="handleClickPlato(plato)">
+                        {{ plato.media}} : {{ plato.nombrePlato }}
+                    </mat-list-option>
+                </mat-selection-list>
+            </div>
+            <div class="p-3 detalle-plato-container detalle-container">
+                <plato-detail [plato]="platoSeleccionado" *ngIf="platoSeleccionado"></plato-detail>
+            </div>
+        </div>
+    </mat-tab>
+  </mat-tab-group>

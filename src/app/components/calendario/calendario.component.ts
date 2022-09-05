@@ -241,10 +241,13 @@ export class CalendarioComponent implements OnInit {
       fecha: this.fechasPropuestas[this.indexFechaAbierta].id,
       nombreEntrante: 'Sin nombre de entrante',
       descripcionEntrante: 'Sin descripción de entrante',
+      fotoEntrante: '',
       nombrePrincipal: 'Sin nombre de principal',
       descripcionPrincipal: 'Sin descripción de principal',
+      fotoPrincipal: '',
       nombrePostre: 'Sin nombre de postre',
       descripcionPostre: 'Sin descripción de postre',
+      fotoPostre: '',
       isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo,
       votacionesAbiertas: false
     };
@@ -271,7 +274,7 @@ export class CalendarioComponent implements OnInit {
     })
   }
   crearPuntuacionesVacias(id:string) {
-    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {key:'value'}) // no se puede crear un objeto vacío
+    this._service.saveWithId(constants.END_POINTS.PUNTUACIONES, id, {cocinero:this.user.nombre}) // no se puede crear un objeto vacío
     // Jueces
     const jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
     jueces.map((juez:User) => {
