@@ -16,6 +16,7 @@ export class PuntuacionesComponent implements OnInit {
   jueces!: User[];
   puntuaciones!: Puntuaciones[];
   catas!: Cata[];
+  puntosAux: any[] = [];
   puntuacionesDeJuezSeleccionado: any; // PuntuacionesDeCata[] = [];
 
   platos: any[] = [];
@@ -28,6 +29,7 @@ export class PuntuacionesComponent implements OnInit {
     // {viewValue: 'Cronológico', value: '2'},
   ];
   selectedOrden = this.ordenes[0].value;
+  arrayDeFechas: any[] = [];
 
   constructor(public _service: AuthService,) { }
 
@@ -54,6 +56,7 @@ export class PuntuacionesComponent implements OnInit {
   }
   handleClickJuez(juez:User) {
     this.puntuacionesDeJuezSeleccionado = [];
+    this.puntosAux = [];
     let puntuacionesOrdenada: any[] = [];
     
     // Recorrer todas las puntuaciones e ir guardando en un array las que sean del juez seleccionado
@@ -66,16 +69,17 @@ export class PuntuacionesComponent implements OnInit {
             valoracion.cocinero = elem.cocinero 
           }
         })
-        puntuacionesOrdenada.push(elem[juez.telefono])
+        this.puntosAux.push(elem[juez.telefono]);
+        puntuacionesOrdenada.push(elem[juez.telefono]);
       }
     })
     
+    this.puntosAux = this.puntosAux.filter((elem:any) => elem[0].sabor > 0);
+
     if(puntuacionesOrdenada[0] != undefined){
-      puntuacionesOrdenada[0].map((x:any) => {
-        // Evitamos el field nombre
-        if(typeof(x) !== 'string' && parseInt(this.calcularMedia(x)) > 0) {
-          this.puntuacionesDeJuezSeleccionado.push(x);
-        }
+      // this.puntuacionesDeJuezSeleccionado.push(this.puntosAux.filter((elem:any) => elem.media !== '0.0'))
+      this.puntosAux.map((elem:any) => {
+          this.puntuacionesDeJuezSeleccionado = this.puntuacionesDeJuezSeleccionado.concat(elem[0], elem[1], elem[2]);
       })
 
       this.selectOrden(this.selectedOrden);
@@ -110,7 +114,6 @@ export class PuntuacionesComponent implements OnInit {
     
     let valoraciones: any[] = [];
     this.puntuaciones.map((puntuacion: any) => {
-      // console.log(puntuacion)
       this.jueces.map((juez: any) => {
         valoraciones.push( {...puntuacion[juez.telefono], fecha: puntuacion.id} );
       })
@@ -124,18 +127,51 @@ export class PuntuacionesComponent implements OnInit {
       }
     })
 
-    this.platos.sort((a,b) => a.media - b.media).reverse();// .filter(plato => parseInt(plato.media) > 0);
-    this.platos.map((plato: any) => {
-      if(plato.media !== '0.0')this.platosPuntuados.push(plato)
+    // Agrupar el listado de platos por nombre => ¿calcular las medias?
+    this.platos = this.platos.filter((elem:any) => elem.media != '0.0')
+
+    let nombresDePlato:any = new Set();
+    let arrayTemporal:any[] = []
+    
+    this.platos.map((plato:any, index) => {
+      arrayTemporal.push({nombrePlato: plato.nombrePlato, media: plato.media, fecha: plato.fecha});
+      nombresDePlato.add(plato.nombrePlato);
     })
+    
+    let arrayPuntos:any = new Array(nombresDePlato.size).fill(0); // [0,0, ... , 0]     
+    let arrayFechas:any = new Array(nombresDePlato.size) 
+    nombresDePlato.forEach((nombrePlato:string, index: number) => {
+      // Buscamos todos los puntos con ese nombre
+      let platosConMismoNombre: any[] = arrayTemporal.filter((elem: any) => elem.nombrePlato == nombrePlato)
+      platosConMismoNombre.map((plato:any) => {
+        arrayPuntos[index] = arrayPuntos[index] ?? 0
+        arrayPuntos[index] += parseFloat(plato.media);
+
+        arrayFechas[index] = arrayFechas[index] ?? ''
+        arrayFechas[index] = plato.fecha;
+      })
+      this.arrayDeFechas = arrayFechas;
+      
+      this.platosPuntuados.push({ 
+        nombrePlato: nombrePlato, 
+        media: parseFloat(arrayPuntos[index])/platosConMismoNombre.length,
+        fecha: arrayFechas[nombrePlato].fecha
+      })
+    });
+
+    this.platosPuntuados.sort((a,b) => a.media - b.media).reverse();
   }
 
   handleClickPlato(plato: any) {
     // Buscar plato en las catas y traerse la información y la foto
     let platoAux: Plato = {};
+    
+    // plato.fecha = this.arrayDeFechas[plato.nombrePlato].fecha
+    // No funciona pero en la condicion del if de L.182 lo hemos guardado previamente
+    // en otro array de fechas con esta única finalidad
 
     this.catas.map((cata:Cata) => {
-      if(cata.id == plato.fecha) {
+      if(cata.id == this.arrayDeFechas[plato.nombrePlato]) {
         // No sabemos si el plato es entrante, principal o postre => pero tenemos su nombre
         if(cata.nombreEntrante == plato.nombrePlato){
           platoAux.nombre = cata.nombreEntrante
