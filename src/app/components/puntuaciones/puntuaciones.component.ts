@@ -68,12 +68,12 @@ export class PuntuacionesComponent implements OnInit {
             valoracion.cocinero = elem.cocinero 
           }
         })
-        this.puntosAux.push(elem[juez.telefono])
-        puntuacionesOrdenada.push(elem[juez.telefono])
+        this.puntosAux.push(elem[juez.telefono]);
+        puntuacionesOrdenada.push(elem[juez.telefono]);
       }
     })
     
-    this.puntosAux.filter((elem:any) => elem[0].sabor > 0)
+    this.puntosAux = this.puntosAux.filter((elem:any) => elem[0].sabor > 0);
 
     if(puntuacionesOrdenada[0] != undefined){
       // this.puntuacionesDeJuezSeleccionado.push(this.puntosAux.filter((elem:any) => elem.media !== '0.0'))
