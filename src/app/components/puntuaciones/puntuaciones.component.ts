@@ -127,10 +127,35 @@ export class PuntuacionesComponent implements OnInit {
       }
     })
 
-    this.platos.sort((a,b) => a.media - b.media).reverse();// .filter(plato => parseInt(plato.media) > 0);
-    this.platos.map((plato: any) => {
-      if(plato.media !== '0.0')this.platosPuntuados.push(plato)
+    // Agrupar el listado de platos por nombre => ¿calcular las medias?
+    this.platos = this.platos.filter((elem:any) => elem.media != '0.0')
+
+    let nombresDePlato:any    = new Set();
+    // let map1:any = []
+    let arrayTemporal:any[] = []
+    
+    this.platos.map((plato:any, index) => {
+      // console.log(plato)
+      arrayTemporal.push({nombrePlato: plato.nombrePlato, media: plato.media});
+      nombresDePlato.add(plato.nombrePlato);
     })
+    
+    let arrayPuntos:any = new Array(nombresDePlato.size).fill(0); // [0,0, ... , 0]     
+    nombresDePlato.forEach((nombrePlato:string, index: number) => {
+      // Buscamos todos los puntos con ese nombre
+      let platosConMismoNombre: any[] = arrayTemporal.filter((elem: any) => elem.nombrePlato == nombrePlato)
+      platosConMismoNombre.map((plato:any) => {
+        arrayPuntos[index] = arrayPuntos[index] ?? 0
+        arrayPuntos[index] += parseFloat(plato.media);
+      })
+      console.log('A', nombrePlato, parseFloat(arrayPuntos[index])/platosConMismoNombre.length);
+      
+    });
+
+    this.platos.sort((a,b) => a.media - b.media).reverse();// .filter(plato => parseInt(plato.media) > 0);
+    // this.platos.map((plato: any) => {
+    //   if(plato.media !== '0.0')this.platosPuntuados.push(plato)
+    // })
   }
 
   handleClickPlato(plato: any) {
