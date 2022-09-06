@@ -29,6 +29,7 @@ export class PuntuacionesComponent implements OnInit {
     // {viewValue: 'Cronológico', value: '2'},
   ];
   selectedOrden = this.ordenes[0].value;
+  arrayDeFechas: any[] = [];
 
   constructor(public _service: AuthService,) { }
 
@@ -113,7 +114,6 @@ export class PuntuacionesComponent implements OnInit {
     
     let valoraciones: any[] = [];
     this.puntuaciones.map((puntuacion: any) => {
-      // console.log(puntuacion)
       this.jueces.map((juez: any) => {
         valoraciones.push( {...puntuacion[juez.telefono], fecha: puntuacion.id} );
       })
@@ -130,40 +130,48 @@ export class PuntuacionesComponent implements OnInit {
     // Agrupar el listado de platos por nombre => ¿calcular las medias?
     this.platos = this.platos.filter((elem:any) => elem.media != '0.0')
 
-    let nombresDePlato:any    = new Set();
-    // let map1:any = []
+    let nombresDePlato:any = new Set();
     let arrayTemporal:any[] = []
     
     this.platos.map((plato:any, index) => {
-      // console.log(plato)
-      arrayTemporal.push({nombrePlato: plato.nombrePlato, media: plato.media});
+      arrayTemporal.push({nombrePlato: plato.nombrePlato, media: plato.media, fecha: plato.fecha});
       nombresDePlato.add(plato.nombrePlato);
     })
     
     let arrayPuntos:any = new Array(nombresDePlato.size).fill(0); // [0,0, ... , 0]     
+    let arrayFechas:any = new Array(nombresDePlato.size) 
     nombresDePlato.forEach((nombrePlato:string, index: number) => {
       // Buscamos todos los puntos con ese nombre
       let platosConMismoNombre: any[] = arrayTemporal.filter((elem: any) => elem.nombrePlato == nombrePlato)
       platosConMismoNombre.map((plato:any) => {
         arrayPuntos[index] = arrayPuntos[index] ?? 0
         arrayPuntos[index] += parseFloat(plato.media);
+
+        arrayFechas[index] = arrayFechas[index] ?? ''
+        arrayFechas[index] = plato.fecha;
       })
-      console.log('A', nombrePlato, parseFloat(arrayPuntos[index])/platosConMismoNombre.length);
+      this.arrayDeFechas = arrayFechas;
       
+      this.platosPuntuados.push({ 
+        nombrePlato: nombrePlato, 
+        media: parseFloat(arrayPuntos[index])/platosConMismoNombre.length,
+        fecha: arrayFechas[nombrePlato].fecha
+      })
     });
 
-    this.platos.sort((a,b) => a.media - b.media).reverse();// .filter(plato => parseInt(plato.media) > 0);
-    // this.platos.map((plato: any) => {
-    //   if(plato.media !== '0.0')this.platosPuntuados.push(plato)
-    // })
+    this.platosPuntuados.sort((a,b) => a.media - b.media).reverse();
   }
 
   handleClickPlato(plato: any) {
     // Buscar plato en las catas y traerse la información y la foto
     let platoAux: Plato = {};
+    
+    // plato.fecha = this.arrayDeFechas[plato.nombrePlato].fecha
+    // No funciona pero en la condicion del if de L.182 lo hemos guardado previamente
+    // en otro array de fechas con esta única finalidad
 
     this.catas.map((cata:Cata) => {
-      if(cata.id == plato.fecha) {
+      if(cata.id == this.arrayDeFechas[plato.nombrePlato]) {
         // No sabemos si el plato es entrante, principal o postre => pero tenemos su nombre
         if(cata.nombreEntrante == plato.nombrePlato){
           platoAux.nombre = cata.nombreEntrante
