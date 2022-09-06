@@ -1,1 +1,19 @@
-<p>clasificacion works!</p>
+<div class="datos d-flex justify-content-center">
+    <h1>clasificación</h1>
+</div>
+<ul>
+    <li *ngFor="let puesto of clasificacion; index as i;">
+       <span class="position">{{ i + 1 }}</span> 
+       <div class="datos d-flex justify-content-between">
+            <div class="info d-flex flex-column ml-2">
+                <span>{{ puesto.nombre }} {{ puesto.apellidos | cutApellidosPipe }}</span>
+                <div>
+                    <i class="fas fa-phone"></i><span>{{ puesto.telefono | cutPhonePipe }}</span>
+                </div>
+            </div>
+            <div class="puntos d-flex align-items-center">
+                    {{ puesto.puntos }}
+            </div>
+        </div>
+    </li>
+</ul>

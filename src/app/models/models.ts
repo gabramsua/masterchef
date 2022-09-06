@@ -59,4 +59,6 @@ export interface Valoracion {
 
 export interface Puntuaciones {
     puntuacion: PuntuacionesDeCata[];
+    cocinero: string;
+    telefono: string;
 }

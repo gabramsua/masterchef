@@ -15,6 +15,12 @@ const Constants = {
         ENTRANTE: 'entrante',
         PRINCIPAL: 'principal',
         POSTRE: 'postre'
+    },
+    COCINEROS: {
+        GABRI: '645303663',
+        POLI: '661910042',
+        LUCIA: '647859744',
+        FERNANDO: '647066682'
     }
 };
 export default Constants;
