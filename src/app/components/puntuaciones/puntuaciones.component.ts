@@ -16,6 +16,7 @@ export class PuntuacionesComponent implements OnInit {
   jueces!: User[];
   puntuaciones!: Puntuaciones[];
   catas!: Cata[];
+  puntosAux: any[] = [];
   puntuacionesDeJuezSeleccionado: any; // PuntuacionesDeCata[] = [];
 
   platos: any[] = [];
@@ -54,6 +55,7 @@ export class PuntuacionesComponent implements OnInit {
   }
   handleClickJuez(juez:User) {
     this.puntuacionesDeJuezSeleccionado = [];
+    this.puntosAux = [];
     let puntuacionesOrdenada: any[] = [];
     
     // Recorrer todas las puntuaciones e ir guardando en un array las que sean del juez seleccionado
@@ -66,16 +68,17 @@ export class PuntuacionesComponent implements OnInit {
             valoracion.cocinero = elem.cocinero 
           }
         })
+        this.puntosAux.push(elem[juez.telefono])
         puntuacionesOrdenada.push(elem[juez.telefono])
       }
     })
     
+    this.puntosAux.filter((elem:any) => elem[0].sabor > 0)
+
     if(puntuacionesOrdenada[0] != undefined){
-      puntuacionesOrdenada[0].map((x:any) => {
-        // Evitamos el field nombre
-        if(typeof(x) !== 'string' && parseInt(this.calcularMedia(x)) > 0) {
-          this.puntuacionesDeJuezSeleccionado.push(x);
-        }
+      // this.puntuacionesDeJuezSeleccionado.push(this.puntosAux.filter((elem:any) => elem.media !== '0.0'))
+      this.puntosAux.map((elem:any) => {
+          this.puntuacionesDeJuezSeleccionado = this.puntuacionesDeJuezSeleccionado.concat(elem[0], elem[1], elem[2]);
       })
 
       this.selectOrden(this.selectedOrden);
