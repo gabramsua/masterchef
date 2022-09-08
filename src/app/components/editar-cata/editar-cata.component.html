@@ -26,6 +26,11 @@
       <mat-form-field appearance="fill" class="textarea-container">
         <mat-label>Descripción del entrante</mat-label>
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionEntrante"></textarea>
+
+        <input type="file" accept=".png, .jpg, jpeg" aria-label="pic" (change)="loadImage($event)" id="inputFile">
+        <label class="btn btn-primary d-flex justify-content-center labelInputFile" for="inputFile">Sube tu imagen de la boda</label>
+    
+
       </mat-form-field>
       <mat-action-row>
         <button mat-button color="primary" (click)="nextStep()">Siguiente</button>

@@ -45,10 +45,10 @@ export class AuthService {
     })
   }
 
-  getAllSnapshot(collection: any): Observable<any> {
-    return new Observable;
-    // return this.firebase.collection(collection).snapshotChanges();
-  }
+  // getAllSnapshot(collection: any): Observable<any> {
+  //   return new Observable;
+  //   // return this.firebase.collection(collection).snapshotChanges();
+  // }
   getAll(collectionChosen: any) {
     let rows: any[] = [];
     getDocs(collection(this.firebase, collectionChosen))
@@ -81,8 +81,6 @@ export class AuthService {
   }
   
   get(collectionChosen: any, id: string) {
-    // console.log('GET', collectionChosen, id)
-    // console.log('catainfo', getDoc(doc(this.firebase, collectionChosen, id)))
     getDoc(doc(this.firebase, collectionChosen, id))
     .then((data:any) => {
       this.currentGet$.next(data.data())
@@ -93,15 +91,15 @@ export class AuthService {
     updateDoc(doc(this.firebase, collection, id), data)
   }
 
-  delete(collection: any, id: any) {
-    // return this.firebase.collection(collection).doc(id).delete();
-  }
+  // delete(collection: any, id: any) {
+  //   // return this.firebase.collection(collection).doc(id).delete();
+  // }
   
-  deleteField(collection: any, id: any, field: any) {
-    // return this.firebase.collection(collection).doc(id).update({
-      // [field]: null
-  // });
-  }
+  // deleteField(collection: any, id: any, field: any) {
+  //   // return this.firebase.collection(collection).doc(id).update({
+  //     // [field]: null
+  // // });
+  // }
 
   login(collection: any, phone: string) {
     getDoc(doc(this.firebase, collection, phone))

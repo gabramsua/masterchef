@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Cata } from 'src/app/models/models';
+import { Cata, User } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
+import { StorageService } from 'src/app/services/storage.service';
 import constants from 'src/constants';
 
 @Component({
@@ -13,11 +14,17 @@ export class EditarCataComponent implements OnInit {
   @Input() cataParaEditar!: Cata;
   
   step = -1;
+  
+  imagenes: any[] = [];
+  currentUser!: User;
 
   constructor(
-    public _service: AuthService,) { }
+    public _service: AuthService,
+    private storageService: StorageService
+  ) { }
 
   ngOnInit(): void {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
   goBack() {
     this.dispatchGoBack.next(null);
@@ -41,6 +48,21 @@ export class EditarCataComponent implements OnInit {
 
     this._service.update(constants.END_POINTS.CATAS, this.cataParaEditar.id, cata);
     this.goBack();
+  }
+
+  loadImage(event: any){
+    console.log(event.target.files)
+
+    let archivo = event.target.files
+    let reader = new FileReader()
+
+    reader.readAsDataURL(archivo[0])
+    reader.onloadend = () => {
+      this.imagenes.push(reader.result)
+      this.storageService.uploadImage(this.currentUser.telefono + '_' + Date.now(), reader.result).then(urlImage => {
+        console.log(urlImage)
+      })
+    }
   }
 
   setStep(index: number) {
