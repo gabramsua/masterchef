@@ -17,9 +17,7 @@ export class EditarCataComponent implements OnInit {
   
   imagenes: any[] = [];
   currentUser!: User;
-  urlFotoEntrante!: string;
-  urlFotoPrincipal!: string;
-  urlFotoPostre!: string;
+  showSpinnerFoto = false;
 
   constructor(
     public _service: AuthService,
@@ -42,15 +40,15 @@ export class EditarCataComponent implements OnInit {
 
       nombreEntrante: this.cataParaEditar.nombreEntrante ?? '',
       descripcionEntrante: this.cataParaEditar.descripcionEntrante ?? '',
-      fotoEntrante: this.urlFotoEntrante ?? '',
+      fotoEntrante: this.cataParaEditar.fotoEntrante ?? '',
 
       nombrePrincipal: this.cataParaEditar.nombrePrincipal ?? '',
       descripcionPrincipal: this.cataParaEditar.descripcionPrincipal ?? '',
-      fotoPrincipal: this.urlFotoPrincipal ?? '',
+      fotoPrincipal: this.cataParaEditar.fotoPrincipal ?? '',
 
       nombrePostre: this.cataParaEditar.nombrePostre ?? '',
       descripcionPostre: this.cataParaEditar.descripcionPostre ?? '',
-      fotoPostre: this.urlFotoPostre ?? '',
+      fotoPostre: this.cataParaEditar.fotoPostre ?? '',
 
       votacionesAbiertas:  acabada ? false : this.cataParaEditar.votacionesAbiertas,
       acabada: acabada
@@ -64,6 +62,8 @@ export class EditarCataComponent implements OnInit {
     let archivo = event.target.files
     let reader = new FileReader()
 
+    this.showSpinnerFoto = true;
+
     reader.readAsDataURL(archivo[0])
     reader.onloadend = () => {
       this.imagenes.push(reader.result)
@@ -72,15 +72,16 @@ export class EditarCataComponent implements OnInit {
         console.log('URL SUBIDA', urlImage)
         switch(plato){
           case 'entrante': 
-            this.urlFotoEntrante = urlImage;
+            this.cataParaEditar.fotoEntrante = urlImage;
             break;
           case 'principal':
-            this.urlFotoPrincipal = urlImage;
+            this.cataParaEditar.fotoPrincipal = urlImage;
             break;
           case 'postre':
-            this.urlFotoPostre = urlImage;
+            this.cataParaEditar.fotoPostre = urlImage;
             break;
         }
+        this.showSpinnerFoto = false;
       })
     }
   }

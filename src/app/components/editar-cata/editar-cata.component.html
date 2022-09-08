@@ -29,13 +29,30 @@
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionEntrante"></textarea>  
       </mat-form-field>
 
+      <div class="botones d-flex justify-content-around align-items-center">
+        <!-- <span>Esta es tu foto actual</span> -->
+        <img 
+          *ngIf="!showSpinnerFoto"
+          src="{{ cataParaEditar.fotoEntrante }}" 
+          alt="No hay ninguna imagen guardada" 
+          width="200">
+        <img
+          *ngIf="showSpinnerFoto"
+          alt="Cargando"
+          src="../../../assets/imgs/spinner.svg"
+          width="200">
+      </div>
+      <div class="mt-2 mb-2">
+        <span>Selecciona un archivo para cambiarla</span>
+      </div>
+
       <div class="input-group mb-3">
         <input
         type="file" 
         class="form-control" 
         accept=".png, .jpg, jpeg" 
         aria-label="pic" 
-        (change)="loadImage($event, 'postre')" 
+        (change)="loadImage($event, 'entrante')" 
         id="inputFile">
       </div>
 
@@ -64,14 +81,29 @@
         <mat-label>Descripción del principal</mat-label>
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionPrincipal"></textarea>
       </mat-form-field>
-  
+
+      <div class="botones d-flex justify-content-around align-items-center">
+        <img 
+          *ngIf="!showSpinnerFoto"
+          src="{{ cataParaEditar.fotoPrincipal }}" 
+          alt="No hay ninguna imagen guardada" 
+          width="200">
+        <img
+          *ngIf="showSpinnerFoto"
+          alt="Cargando"
+          src="../../../assets/imgs/spinner.svg">
+      </div>
+      <div class="mt-2 mb-2">
+        <span>Selecciona un archivo para cambiarla</span>
+      </div>
+
       <div class="input-group mb-3">
         <input
         type="file" 
         class="form-control" 
         accept=".png, .jpg, jpeg" 
         aria-label="pic" 
-        (change)="loadImage($event, 'postre')" 
+        (change)="loadImage($event, 'principal')" 
         id="inputFile">
       </div>
 
@@ -101,7 +133,22 @@
         <mat-label>Descripción del postre</mat-label>
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionPostre"></textarea>
       </mat-form-field>
-  
+      
+      <div class="botones d-flex justify-content-around align-items-center">
+        <img 
+          *ngIf="!showSpinnerFoto"
+          src="{{ cataParaEditar.fotoPostre }}" 
+          alt="No hay ninguna imagen guardada" 
+          width="200">
+        <img
+          *ngIf="showSpinnerFoto"
+          alt="Cargando"
+          src="../../../assets/imgs/spinner.svg">
+      </div>
+      <div class="mt-2 mb-2">
+        <span>Selecciona un archivo para cambiarla</span>
+      </div>
+
       <div class="input-group mb-3">
         <input 
           type="file" 
