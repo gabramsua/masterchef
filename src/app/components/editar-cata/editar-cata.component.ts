@@ -3,6 +3,7 @@ import { Cata, User } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
 import constants from 'src/constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'editar-cata',
@@ -63,13 +64,13 @@ export class EditarCataComponent implements OnInit {
     let reader = new FileReader()
 
     this.showSpinnerFoto = true;
+    const now = moment().format('DD-MM-YYYY  HH:mm:ss');
 
     reader.readAsDataURL(archivo[0])
     reader.onloadend = () => {
       this.imagenes.push(reader.result)
-      this.storageService.uploadImage(this.currentUser.telefono + '_' + Date.now(), reader.result)
+      this.storageService.uploadImage(this.currentUser.telefono + '_' + now, reader.result)
       .then(urlImage => {
-        console.log('URL SUBIDA', urlImage)
         switch(plato){
           case 'entrante': 
             this.cataParaEditar.fotoEntrante = urlImage;
