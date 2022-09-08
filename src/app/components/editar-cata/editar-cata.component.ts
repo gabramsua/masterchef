@@ -17,6 +17,9 @@ export class EditarCataComponent implements OnInit {
   
   imagenes: any[] = [];
   currentUser!: User;
+  urlFotoEntrante!: string;
+  urlFotoPrincipal!: string;
+  urlFotoPostre!: string;
 
   constructor(
     public _service: AuthService,
@@ -36,12 +39,19 @@ export class EditarCataComponent implements OnInit {
       telefono: this.cataParaEditar.telefono,
       fecha: this.cataParaEditar.fecha,
       isAlmuerzo: this.cataParaEditar.isAlmuerzo ?? false,
+
       nombreEntrante: this.cataParaEditar.nombreEntrante ?? '',
       descripcionEntrante: this.cataParaEditar.descripcionEntrante ?? '',
+      fotoEntrante: this.urlFotoEntrante ?? '',
+
       nombrePrincipal: this.cataParaEditar.nombrePrincipal ?? '',
       descripcionPrincipal: this.cataParaEditar.descripcionPrincipal ?? '',
+      fotoPrincipal: this.urlFotoPrincipal ?? '',
+
       nombrePostre: this.cataParaEditar.nombrePostre ?? '',
       descripcionPostre: this.cataParaEditar.descripcionPostre ?? '',
+      fotoPostre: this.urlFotoPostre ?? '',
+
       votacionesAbiertas:  acabada ? false : this.cataParaEditar.votacionesAbiertas,
       acabada: acabada
     };
@@ -50,17 +60,27 @@ export class EditarCataComponent implements OnInit {
     this.goBack();
   }
 
-  loadImage(event: any){
-    console.log(event.target.files)
-
+  loadImage(event: any, plato: string){
     let archivo = event.target.files
     let reader = new FileReader()
 
     reader.readAsDataURL(archivo[0])
     reader.onloadend = () => {
       this.imagenes.push(reader.result)
-      this.storageService.uploadImage(this.currentUser.telefono + '_' + Date.now(), reader.result).then(urlImage => {
-        console.log(urlImage)
+      this.storageService.uploadImage(this.currentUser.telefono + '_' + Date.now(), reader.result)
+      .then(urlImage => {
+        console.log('URL SUBIDA', urlImage)
+        switch(plato){
+          case 'entrante': 
+            this.urlFotoEntrante = urlImage;
+            break;
+          case 'principal':
+            this.urlFotoPrincipal = urlImage;
+            break;
+          case 'postre':
+            this.urlFotoPostre = urlImage;
+            break;
+        }
       })
     }
   }

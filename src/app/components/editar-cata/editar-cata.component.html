@@ -6,6 +6,7 @@
     </button>
     <span>Editar datos de la cata</span>
 </div>
+
 <mat-accordion class="editar-cata-container">
     <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
       <mat-expansion-panel-header>
@@ -25,13 +26,19 @@
   
       <mat-form-field appearance="fill" class="textarea-container">
         <mat-label>Descripción del entrante</mat-label>
-        <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionEntrante"></textarea>
-
-        <input type="file" accept=".png, .jpg, jpeg" aria-label="pic" (change)="loadImage($event)" id="inputFile">
-        <label class="btn btn-primary d-flex justify-content-center labelInputFile" for="inputFile">Sube tu imagen de la boda</label>
-    
-
+        <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionEntrante"></textarea>  
       </mat-form-field>
+
+      <div class="input-group mb-3">
+        <input
+        type="file" 
+        class="form-control" 
+        accept=".png, .jpg, jpeg" 
+        aria-label="pic" 
+        (change)="loadImage($event, 'postre')" 
+        id="inputFile">
+      </div>
+
       <mat-action-row>
         <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
       </mat-action-row>
@@ -48,7 +55,6 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
   
-      
       <mat-form-field appearance="fill">
         <mat-label>Nombre del principal</mat-label>
         <input matInput aria-label="." [(ngModel)]="cataParaEditar.nombrePrincipal">
@@ -59,6 +65,16 @@
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionPrincipal"></textarea>
       </mat-form-field>
   
+      <div class="input-group mb-3">
+        <input
+        type="file" 
+        class="form-control" 
+        accept=".png, .jpg, jpeg" 
+        aria-label="pic" 
+        (change)="loadImage($event, 'postre')" 
+        id="inputFile">
+      </div>
+
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Anterior</button>
         <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
@@ -85,6 +101,16 @@
         <mat-label>Descripción del postre</mat-label>
         <textarea matInput aria-label="." [(ngModel)]="cataParaEditar.descripcionPostre"></textarea>
       </mat-form-field>
+  
+      <div class="input-group mb-3">
+        <input 
+          type="file" 
+          class="form-control" 
+          accept=".png, .jpg, jpeg" 
+          aria-label="pic" 
+          (change)="loadImage($event, 'postre')" 
+          id="inputFile">
+      </div>
 
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Anterior</button>
