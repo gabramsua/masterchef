@@ -3,6 +3,7 @@ import { Cata, Plato, PuntuacionesDeCata, User } from 'src/app/models/models';
 import Constants from 'src/constants';
 import { AuthService } from 'src/app/services/auth.service';
 import { Valoracion } from '../../models/models';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ver-cata',
@@ -18,11 +19,21 @@ export class VerCataComponent implements OnInit {
   puntuacionesDeLaCata: PuntuacionesDeCata[] = [];
   puntuacionesDePlatoSeleccionado: any[] = [];
 
-  constructor(public _service: AuthService,) { }
+  constructor(
+    public _service: AuthService,
+    private router: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
     this.cata = JSON.parse(localStorage.getItem('currentCata') || '{}');
-
+    this._service.currentGet$.subscribe( puntuaciones => {
+      this.puntuacionesDeLaCata.push(puntuaciones);
+      
+      this.router.params.subscribe((indexSeleccionado: any) => {
+        indexSeleccionado.platoSeleccionado != '0' && !isNaN(indexSeleccionado.platoSeleccionado) ? this.puntuacionesDePlato(indexSeleccionado.platoSeleccionado) : null;
+      })
+    })
+    
     this.platoEntrante = {
       nombre: this.cata.nombreEntrante ?? 'sin nombre',
       descripcion: this.cata.descripcionEntrante ?? 'sin descripcion',
@@ -45,14 +56,12 @@ export class VerCataComponent implements OnInit {
     this.getPuntuacionesDeCata();
   }
   getPuntuacionesDeCata() {    
-    const fecha = this.cata.fecha;
-    this._service.get(Constants.END_POINTS.PUNTUACIONES, fecha);    
-    this._service.currentGet$.subscribe( puntuaciones => {
-      this.puntuacionesDeLaCata.push(puntuaciones);
-    })
+    this._service.get(Constants.END_POINTS.PUNTUACIONES, this.cata.fecha);    
   }
 
   puntuacionesDePlato(platoSeleccionado: number) {
+    platoSeleccionado--;
+    
     this.puntuacionesDePlatoSeleccionado = [];
 
     // Seleccionar el plato dentro de cada juez
@@ -63,7 +72,7 @@ export class VerCataComponent implements OnInit {
             cantidad: elem[juez.telefono][platoSeleccionado]?.cantidad,
             estetica: elem[juez.telefono][platoSeleccionado]?.estetica,
             sabor:elem[juez.telefono][platoSeleccionado]?.sabor,
-            nombre: elem[juez.telefono][platoSeleccionado].nombre,
+            nombre: elem[juez.telefono][platoSeleccionado]?.nombre,
           })
         }
       })

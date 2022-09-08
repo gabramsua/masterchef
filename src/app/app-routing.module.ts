@@ -11,7 +11,7 @@ import { VerCataComponent } from './components/ver-cata/ver-cata.component';
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'verCata', component: VerCataComponent},
+  {path: 'verCata/:platoSeleccionado', component: VerCataComponent},
   {path: 'calendario', component: CalendarioComponent},
   {path: 'clasificacion', component: ClasificacionComponent},
   {path: 'puntuar', component: PuntuarComponent},

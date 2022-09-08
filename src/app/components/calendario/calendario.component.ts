@@ -163,7 +163,7 @@ export class CalendarioComponent implements OnInit {
   }
   verCata(cata: Cata){
     localStorage.setItem('currentCata', JSON.stringify(cata));
-    this.router.navigate(['verCata']);
+    this.router.navigate(['verCata', 0]);
   }
   isAlmuerzo(index:number) {
     // TODO: No muestra la luna, sólo el sol

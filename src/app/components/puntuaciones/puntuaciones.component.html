@@ -62,7 +62,7 @@
                 </mat-selection-list>
             </div>
             <div class="p-3 detalle-plato-container detalle-container">
-                <plato-detail [plato]="platoSeleccionado" *ngIf="platoSeleccionado"></plato-detail>
+                <plato-detail [plato]="platoSeleccionado" *ngIf="platoSeleccionado" (click)="clickPlatoDetalle(platoSeleccionado)"></plato-detail>
             </div>
         </div>
     </mat-tab>

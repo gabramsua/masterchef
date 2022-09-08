@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Cata, PuntuacionesDeCata, User, Valoracion } from 'src/app/models/models';
-import constants from 'src/constants';
+import { Router } from '@angular/router';
+import { Cata, User, Valoracion } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { Puntuaciones, Plato } from '../../models/models';
+import constants from 'src/constants';
 interface Orden {
   value: string;
   viewValue: string;
@@ -22,6 +23,8 @@ export class PuntuacionesComponent implements OnInit {
   platos: any[] = [];
   platosPuntuados: any[] = [];
   platoSeleccionado!: Plato;
+  indexPlatoSeleccionado = 0;
+  cataSeleccionada!: Cata;
 
   ordenes: Orden[] = [
     {viewValue: 'Mayor a Menor', value: '0'},
@@ -31,7 +34,9 @@ export class PuntuacionesComponent implements OnInit {
   selectedOrden = this.ordenes[0].value;
   arrayDeFechas: any[] = [];
 
-  constructor(public _service: AuthService,) { }
+  constructor(
+    public _service: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
@@ -177,23 +182,36 @@ export class PuntuacionesComponent implements OnInit {
           platoAux.nombre = cata.nombreEntrante
           platoAux.descripcion = cata.descripcionEntrante;
           platoAux.foto = cata.fotoEntrante;
+          this.indexPlatoSeleccionado = 1;
         }
         else if(cata.nombrePrincipal == plato.nombrePlato){
           platoAux.nombre = cata.nombrePrincipal
           platoAux.descripcion = cata.descripcionPrincipal;
           platoAux.foto = cata.fotoPrincipal;
+          this.indexPlatoSeleccionado = 2;
         }
         else if(cata.nombrePostre == plato.nombrePlato){
           platoAux.nombre = cata.nombrePostre
           platoAux.descripcion = cata.descripcionPostre;
           platoAux.foto = cata.fotoPostre;
+          this.indexPlatoSeleccionado = 3;
         }
-
         this.platoSeleccionado = platoAux;
+        this.cataSeleccionada = cata;
       }
     })
 
 
   }
 
+  clickPlatoDetalle(platoSeleccionado: any){
+    console.log(platoSeleccionado)
+    console.log(this.cataSeleccionada)
+
+    // BUSCAR LA CATA DE ESTE PLATO
+
+
+    localStorage.setItem('currentCata', JSON.stringify(this.cataSeleccionada));
+    this.router.navigate(['verCata', this.indexPlatoSeleccionado]);
+  }
 }
