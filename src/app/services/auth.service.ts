@@ -83,7 +83,7 @@ export class AuthService {
   get(collectionChosen: any, id: string) {
     getDoc(doc(this.firebase, collectionChosen, id))
     .then((data:any) => {
-      this.currentGet$.next(data.data())
+      this.currentGet$.next(data.data());
     })
   }
 
