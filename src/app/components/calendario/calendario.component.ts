@@ -254,6 +254,15 @@ export class CalendarioComponent implements OnInit {
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
     this.crearPuntuacionesVacias(cata.id);
 
+    // Actualizar user
+    if(this.user.cata1 == '') {
+      this.user.cata1 = cata.id;
+    } else if(this.user.cata2 == '') {
+      this.user.cata2 = cata.id
+    }
+    this._service.update(constants.END_POINTS.USERS, this.user.telefono, this.user)
+    localStorage.setItem('currentUser', JSON.stringify(this.user));
+
     this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
   descartarFecha() {

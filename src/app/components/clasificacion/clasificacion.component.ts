@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import Constants from 'src/constants';
 import constants from 'src/constants';
@@ -47,7 +48,7 @@ export class ClasificacionComponent implements OnInit {
   puntosLucia: any[] = [];
   puntosAux: any[] = [];
 
-  constructor(public _service: AuthService,) { }
+  constructor(public _service: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.cocineros = JSON.parse(localStorage.getItem('jueces') || '{}').filter((elem:any) => elem.isAspirante);
@@ -150,7 +151,7 @@ export class ClasificacionComponent implements OnInit {
   }
 
   calcularMedia(puntos: Valoracion) {
-    return ((puntos.cantidad + puntos.estetica + puntos.sabor) / 3).toPrecision(2); // toFixed(2)
+    return ((puntos.cantidad + puntos.estetica + puntos.sabor) / 3).toPrecision(2); // toFixed(2);
   }
 
   calcularNotaCocinero( notas: any[] ) {
@@ -166,5 +167,13 @@ export class ClasificacionComponent implements OnInit {
     })
 
     return notasValoraciones/numeroValoraciones;
+  }
+
+  verPuntuacionesDeCata(cocinero: any) {
+    // Save in localStorage
+    localStorage.setItem('puntuacionesDeCocinero', JSON.stringify(cocinero));
+
+    // Redirect
+    this.router.navigate(['/puntuaciones-de-cata']);
   }
 }

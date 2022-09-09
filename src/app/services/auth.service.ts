@@ -105,7 +105,7 @@ export class AuthService {
     getDoc(doc(this.firebase, collection, phone))
     // getDoc(doc(this.firebase, collection, '645303663'))
     .then((data:any) => {
-      if(data.data()){
+      if(data.data()) {
         localStorage.setItem('currentUser', JSON.stringify(data.data()));
         this.currentUser$.next(data.data());
         this.router.navigate(['home']);
