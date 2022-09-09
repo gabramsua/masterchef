@@ -2,9 +2,9 @@
 <h1 class="display-4">El menú</h1>
 <div class="container-fluid py-2">
     <div class="d-flex flex-row flex-nowrap overflow-auto">
-        <plato-detail [plato]="platoEntrante" (click)="puntuacionesDePlato(1)"></plato-detail>
-        <plato-detail [plato]="platoPrincipal" (click)="puntuacionesDePlato(2)"></plato-detail>
-        <plato-detail [plato]="platoPostre" (click)="puntuacionesDePlato(3)"></plato-detail>
+        <plato-detail [plato]="platoEntrante" (click)="puntuacionesDePlato(1)" [ngClass]="platoSeleccionado == 0 ? 'isSelected' : '' "></plato-detail>
+        <plato-detail [plato]="platoPrincipal" (click)="puntuacionesDePlato(2)" [ngClass]="platoSeleccionado == 1 ? 'isSelected' : '' "></plato-detail>
+        <plato-detail [plato]="platoPostre" (click)="puntuacionesDePlato(3)" [ngClass]="platoSeleccionado == 2 ? 'isSelected' : '' "></plato-detail>
     </div>
 </div>
 

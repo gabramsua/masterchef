@@ -19,6 +19,8 @@ export class VerCataComponent implements OnInit {
   puntuacionesDeLaCata: PuntuacionesDeCata[] = [];
   puntuacionesDePlatoSeleccionado: any[] = [];
 
+  platoSeleccionado = -1;
+
   constructor(
     public _service: AuthService,
     private router: ActivatedRoute
@@ -61,6 +63,7 @@ export class VerCataComponent implements OnInit {
 
   puntuacionesDePlato(platoSeleccionado: number) {
     platoSeleccionado--;
+    this.platoSeleccionado = platoSeleccionado;
     
     this.puntuacionesDePlatoSeleccionado = [];
 
