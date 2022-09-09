@@ -204,13 +204,7 @@ export class PuntuacionesComponent implements OnInit {
 
   }
 
-  clickPlatoDetalle(platoSeleccionado: any){
-    console.log(platoSeleccionado)
-    console.log(this.cataSeleccionada)
-
-    // BUSCAR LA CATA DE ESTE PLATO
-
-
+  clickPlatoDetalle() {
     localStorage.setItem('currentCata', JSON.stringify(this.cataSeleccionada));
     this.router.navigate(['verCata', this.indexPlatoSeleccionado]);
   }
