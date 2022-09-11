@@ -3,6 +3,7 @@ import { Cata, User } from 'src/app/models/models';
 import { AuthService } from 'src/app/services/auth.service';
 import Constants from 'src/constants';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'puntuaciones-de-cata',
@@ -29,7 +30,9 @@ export class PuntuacionesDeCataComponent implements OnInit{
   selectedOrden = this.platos[0].value;
   selectedOrden2 = this.platos[0].value;
 
-  constructor(public _service: AuthService,) { }
+  constructor(
+    public _service: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.cocinero = JSON.parse(localStorage.getItem('puntuacionesDeCocinero') || '{}')
@@ -50,8 +53,6 @@ export class PuntuacionesDeCataComponent implements OnInit{
     // 0. Guardar la fecha de la cata al establecer una fecha
     // 1. Traerse al user y sus fechas de catas
     // 2. Get Puntuaciones para cada fecha
-
-    // YO CREO QUE YA SE PUEDEN MOSTRAR LAS PUNTUACIONES
     
   }
 
@@ -59,11 +60,16 @@ export class PuntuacionesDeCataComponent implements OnInit{
     this._service.getAll(Constants.END_POINTS.PUNTUACIONES)
   }
 
-  verCata(i: number){
-    console.log('Click ver Cata', i)
-  }
-  getAllPuntuacionesDelUsuario(index: number) {
-    return this.allPuntuacionesDelUsuario[index];
+  verCata(i: number) {
+    this._service.getAll(Constants.END_POINTS.CATAS);
+    
+    this._service.catas$.subscribe( catas => {
+      this.catasRealizadasDelUsuario = catas.filter(elem => elem.telefono == this.cocinero.telefono);
+      
+      localStorage.setItem('currentCata', JSON.stringify(this.catasRealizadasDelUsuario[i]));
+      this.router.navigate(['verCata', 0]);
+    })
+    
   }
   selectPlato(index: number, plato: string) {
 

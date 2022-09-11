@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Cata, Plato, PuntuacionesDeCata, User } from 'src/app/models/models';
 import Constants from 'src/constants';
 import { AuthService } from 'src/app/services/auth.service';
-import { Valoracion } from '../../models/models';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
