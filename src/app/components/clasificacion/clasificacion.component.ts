@@ -21,7 +21,7 @@ export class ClasificacionComponent implements OnInit {
     {
       nombre: 'Javier',
       apellidos: 'Armijo',
-      telefono: '623469128',
+      telefono: '661910042',
       puntos: '0'
     },
     {

@@ -37,6 +37,9 @@ export class PuntuacionesDeCataComponent implements OnInit{
   ngOnInit(): void {
     this.cocinero = JSON.parse(localStorage.getItem('puntuacionesDeCocinero') || '{}')
     this.jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
+    // 0. Guardar la fecha de la cata al establecer una fecha
+    // 1. Traerse al user y sus fechas de catas
+    // 2. Get Puntuaciones para cada fecha
     
     this.jueces.map((juez: any) => {
       if(juez.telefono == this.cocinero.telefono) {
@@ -47,13 +50,14 @@ export class PuntuacionesDeCataComponent implements OnInit{
     this._service.puntuaciones$.subscribe( puntuaciones => {
       puntuaciones.sort((a, b) => (moment(a.id, 'DD-MM-YYYY').toDate().valueOf() > moment(b.id, 'DD-MM-YYYY').toDate().valueOf()) ? 1 : -1)
       this.allPuntuacionesDelUsuario = puntuaciones.filter( elem => elem.telefono == this.cocinero.telefono)
-      console.log(this.allPuntuacionesDelUsuario)
     })
     
-    // 0. Guardar la fecha de la cata al establecer una fecha
-    // 1. Traerse al user y sus fechas de catas
-    // 2. Get Puntuaciones para cada fecha
+    this._service.catas$.subscribe( catas => {
+      this.catasRealizadasDelUsuario = catas.filter(elem => elem.telefono == this.cocinero.telefono);
+    })
     
+    this._service.getAll(Constants.END_POINTS.CATAS);
+      
   }
 
   getAllPuntuaciones() {
@@ -61,16 +65,10 @@ export class PuntuacionesDeCataComponent implements OnInit{
   }
 
   verCata(i: number) {
-    this._service.getAll(Constants.END_POINTS.CATAS);
-    
-    this._service.catas$.subscribe( catas => {
-      this.catasRealizadasDelUsuario = catas.filter(elem => elem.telefono == this.cocinero.telefono);
-      
-      localStorage.setItem('currentCata', JSON.stringify(this.catasRealizadasDelUsuario[i]));
-      this.router.navigate(['verCata', 0]);
-    })
-    
+    localStorage.setItem('currentCata', JSON.stringify(this.catasRealizadasDelUsuario[i]));
+    this.router.navigate(['verCata', 0]);   
   }
+
   selectPlato(index: number, plato: string) {
 
     if(parseInt(plato) != 100) {
