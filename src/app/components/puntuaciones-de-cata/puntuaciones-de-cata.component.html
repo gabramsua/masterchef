@@ -1,3 +1,45 @@
-<p>puntuaciones-de-cata works!</p>
-<p>Hacer la lista de los concursantes y al hacer click desaparece el componente y se abren las dos catas con puntuaciones.</p>
-<p>Get All Catas from User u</p>
+<h3 class="d-flex justify-content-center">Puntuaciones de {{ cocinero.nombre }}</h3>
+
+<div *ngIf="allPuntuacionesDelUsuario.length == 0" >
+    <h4>No ha realizado ninguna cata aún</h4>
+</div>
+
+<div *ngFor="let cata of allPuntuacionesDelUsuario; index as i;" class="d-flex flex-column mt-2">
+    <div class="d-flex justify-content-around align-items-center">
+        <h4 class="display-4 d-flex justify-content-start">
+            {{ i == 0 ? 'Primera Cata' : 'Segunda Cata' }}
+        </h4>
+
+        <button class="btn btn-outline-secondary" (click)="verCata(i)">
+            <span>Ver Menú</span>
+        </button>
+
+        <mat-form-field appearance="fill" *ngIf="i == 0">
+            <mat-label>Plato</mat-label>
+            <mat-select [(value)]="selectedOrden" (selectionChange)="selectPlato(i, $event.value)">
+                <mat-option [value]="option.value" *ngFor="let option of platos">{{ option.viewValue }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="i == 1">
+            <mat-label>Plato</mat-label>
+            <mat-select [(value)]="selectedOrden2" (selectionChange)="selectPlato(i, $event.value)">
+                <mat-option [value]="option.value" *ngFor="let option of platos">{{ option.viewValue }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="i == 0" class="container-fluid py-2 d-flex flex-row flex-nowrap overflow-auto" >
+        <div class="puntuaciones-container" *ngFor="let puntuacionDeJuez of allPuntuacionesDelUsuarioCata1">
+            <puntuacion-detail [puntos]="puntuacionDeJuez"></puntuacion-detail>
+        </div>
+    </div>
+
+    
+    <div *ngIf="i == 1" class="container-fluid py-2 d-flex flex-row flex-nowrap overflow-auto" >
+        <div class="puntuaciones-container" *ngFor="let puntuacionDeJuez of allPuntuacionesDelUsuarioCata2">
+            <puntuacion-detail [puntos]="puntuacionDeJuez"></puntuacion-detail>
+        </div>
+    </div>
+    
+</div> 
