@@ -140,7 +140,7 @@ export class CalendarioComponent implements OnInit {
       votosEnContra: [],
       descartada: false,
       establecida: false,
-      isAlmuerzo: this.tipoCata.value.isAlmuerzo
+      isAlmuerzo: (this.tipoCata.value.isAlmuerzo === 'true')
     }
     // SIN ID: this._service.save(constants.END_POINTS.FECHAS_PROPUESTAS, fechaPropuesta)
     /* CON ID */ this._service.saveWithId(constants.END_POINTS.FECHAS_PROPUESTAS,fechaPropuesta.id, fechaPropuesta)

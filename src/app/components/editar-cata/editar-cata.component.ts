@@ -38,6 +38,7 @@ export class EditarCataComponent implements OnInit {
       telefono: this.cataParaEditar.telefono,
       fecha: this.cataParaEditar.fecha,
       isAlmuerzo: this.cataParaEditar.isAlmuerzo ?? false,
+      isPrimeraCata: this.cataParaEditar.isPrimeraCata,
 
       nombreEntrante: this.cataParaEditar.nombreEntrante ?? '',
       descripcionEntrante: this.cataParaEditar.descripcionEntrante ?? '',
