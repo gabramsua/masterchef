@@ -37,6 +37,7 @@ export class ClasificacionComponent implements OnInit {
       puntos: '0'
     }
   ];
+  showSpinner = false;
   puntuaciones!: Puntuaciones[];
   cocineros!: User[];
   jueces!: User[];
@@ -51,6 +52,7 @@ export class ClasificacionComponent implements OnInit {
   constructor(public _service: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.showSpinner = true;
     this.cocineros = JSON.parse(localStorage.getItem('jueces') || '{}').filter((elem:any) => elem.isAspirante);
     this.jueces = JSON.parse(localStorage.getItem('jueces') || '{}');
     
@@ -67,6 +69,8 @@ export class ClasificacionComponent implements OnInit {
 
       // Ordenar la clasificación
       this.clasificacion.sort((a,b) => a.puntos - b.puntos).reverse();
+      
+      this.showSpinner = false;
     })
 
     this.getAllPuntuaciones();

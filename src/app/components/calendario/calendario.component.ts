@@ -100,7 +100,7 @@ export class CalendarioComponent implements OnInit {
     return this.catas?.length == 8;
   }
   aunTieneCatasPorRealizar(): boolean {
-    return this.catas.filter(cata => cata.telefono == this.user.telefono).length < 2
+    return this.catas.filter(cata => cata.telefono == this.user.telefono).length < 2 && this.user.isAspirante
   }
   hayCataHoy(fecha: any): boolean {
     return fecha ==  this.formatDate(this.hoy);
@@ -167,7 +167,7 @@ export class CalendarioComponent implements OnInit {
   }
   isAlmuerzo(index:number) {
     // TODO: No muestra la luna, sólo el sol
-    console.log('IS ALMUERZO?', this.fechasPropuestas[index].isAlmuerzo)
+    // console.log('IS ALMUERZO?', this.fechasPropuestas[index].isAlmuerzo)
     return this.fechasPropuestas[index].isAlmuerzo;
   }
   openModalFechaPropuesta(index: number) {
@@ -225,7 +225,7 @@ export class CalendarioComponent implements OnInit {
       this.errorAlert('')
     } else {
       this.fechasPropuestas[this.indexFechaAbierta].establecida = true;
-      this.sweetAlert()
+      // this.sweetAlert()
     }
     // Establecer fecha propuesta
     this._service.update(
@@ -249,7 +249,8 @@ export class CalendarioComponent implements OnInit {
       descripcionPostre: 'Sin descripción de postre',
       fotoPostre: '',
       isAlmuerzo: this.fechasPropuestas[this.indexFechaAbierta].isAlmuerzo,
-      votacionesAbiertas: false
+      votacionesAbiertas: false,
+      isPrimeraCata: this.user.cata1 == '',
     };
     this._service.saveWithId(constants.END_POINTS.CATAS, cata.id, cata)
     this.crearPuntuacionesVacias(cata.id);
@@ -260,10 +261,13 @@ export class CalendarioComponent implements OnInit {
     } else if(this.user.cata2 == '') {
       this.user.cata2 = cata.id
     }
-    this._service.update(constants.END_POINTS.USERS, this.user.telefono, this.user)
+    this._service.update(constants.END_POINTS.USERS, this.user.telefono.toString(), this.user)
     localStorage.setItem('currentUser', JSON.stringify(this.user));
 
-    this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
+    this.getFechasPropuestas()
+    this.sweetAlert();
+
+    // this.estadoCalendario = constants.ESTADOS_CALENDARIO.LISTA;
   }
   descartarFecha() {
     this.fechasPropuestas[this.indexFechaAbierta].descartada = true;
@@ -271,6 +275,7 @@ export class CalendarioComponent implements OnInit {
       constants.END_POINTS.FECHAS_PROPUESTAS, 
       this.fechasPropuestas[this.indexFechaAbierta].id, 
       this.fechasPropuestas[this.indexFechaAbierta])
+    this.getFechasPropuestas()
     this.sweetAlert()
   }
   descartarFechasAntiguas(fechas: any[]){

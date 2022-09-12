@@ -1,7 +1,15 @@
 <div class="title d-flex justify-content-center">
     <h1>clasificación</h1>
 </div>
-<ul>
+<div class="title d-flex justify-content-center">
+    <img
+        *ngIf="showSpinner"
+        alt="Cargando"
+        src="../../../assets/imgs/spinner.svg"
+        width="200">
+</div>
+
+<ul *ngIf="!showSpinner">
     <li *ngFor="let puesto of clasificacion; index as i;">
        <span class="position">{{ i + 1 }}</span> 
        <div class="datos d-flex justify-content-between">

@@ -1,4 +1,14 @@
 <div *ngIf="estadoCalendario === 'lista'">
+
+    <!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+    <!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+    <button [disabled]="aunQuedanCatasPorRealizar()" class="btn btn-outline-secondary mb-3" (click)="verFechas()">
+        <span *ngIf="!aunQuedanCatasPorRealizar()">Ver Fechas Propuestas</span>
+        <span *ngIf="aunQuedanCatasPorRealizar()">No quedan catas por realizar</span>
+    </button>
+    <!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+    <!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+
     <h4 class="display-4 d-flex justify-content-start">Próximas Catas</h4>
     <mat-list>
         <div class="card mb-3" *ngFor="let cata of getCatasProximas()">
@@ -29,8 +39,8 @@
         </div>
     </mat-list>
 
-<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
-<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? -->
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? --
+<!-- VER FECHAS PROPUESTAS => ¿DEBERÍA IR ARRIBA DEL TODO? --
 <button [disabled]="aunQuedanCatasPorRealizar()" class="btn btn-outline-secondary" (click)="verFechas()">
     <span *ngIf="!aunQuedanCatasPorRealizar()">Ver Fechas Propuestas</span>
     <span *ngIf="aunQuedanCatasPorRealizar()">No quedan catas por realizar</span>
@@ -50,6 +60,7 @@
             [disabled]="!aunTieneCatasPorRealizar()" 
             class="btn btn-outline-secondary" 
             (click)="proponerFecha()"
+            [hidden]="!user.isAspirante"
             *ngIf="!showDatepicker">
             <span *ngIf="aunTieneCatasPorRealizar()">Proponer Fecha ({{ siguienteCata() }} cata)</span>
             <span *ngIf="!aunTieneCatasPorRealizar()">No te quedan catas</span>
@@ -192,8 +203,15 @@
                     <button class="btn btn-danger ml-4" data-dismiss="modal" *ngIf="!yaVoteEnContra()" (click)="votarEnContra()">En Contra</button>
                 </div>
                 <div class="d-flex justify-content-around">
-                    <button class="btn btn-success mr-4" (click)="establecerFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Establecer</button>
-                    <button class="btn btn-danger mr-4"  (click)="descartarFecha()" data-dismiss="modal" *ngIf="esMiPropuesta(-1)">Descartar</button>
+                    <button class="btn btn-success mr-4" 
+                        (click)="establecerFecha()" 
+                        data-dismiss="modal" 
+                        [disabled]="user.cata1 !='' && user.cata2 != ''" 
+                        *ngIf="esMiPropuesta(-1)">Establecer</button>
+                    <button class="btn btn-danger mr-4"  
+                        (click)="descartarFecha()" 
+                        data-dismiss="modal" 
+                        *ngIf="esMiPropuesta(-1)">Descartar</button>
                     <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
